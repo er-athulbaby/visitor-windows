@@ -2,12 +2,16 @@
 
 ## Install on a new PC
 1. Plug in the CPR card reader.
-2. Run `ServiceGatePass-Setup-<version>.exe` as an administrator. If the card reader service is not
-   installed yet, Setup shows **Install the CPR card reader service**, ticked by default. Leave it ticked.
-   Setup then copies the service, with the Bahrain SDK included, to
-   `C:\Program Files (x86)\CIO\GCC CardRead Server`, and registers and starts the Windows service
-   "CIO GCC CardRead Server". The option is hidden when the service is already installed.
-   Silent install including the service: `ServiceGatePass-Setup-<version>.exe /SILENT /TASKS="cardreader"`.
+2. Run `ServiceGatePass-Setup-<version>.exe` as an administrator. If the card reader service is
+   missing or not running, Setup shows **Install the CPR card reader service**, ticked by default.
+   Leave it ticked. Setup then follows the vendor's steps:
+   - It runs the vendor's `SCardReadServer.exe` setup. Click through its screens.
+   - It stops the "CIO GCC CardRead Server" service.
+   - It copies the new Bahrain SDK files over the old ones. The files are written by the installer,
+     so there is no "Unblock" step.
+   - It sets the service to start automatically and starts it.
+   If a broken service from an earlier attempt exists, Setup removes it first. The option is hidden
+   when the service is already running.
 3. On first start, fill in the hotel name, logo, locations and the first admin account.
 4. Check: with a card inserted, **Read CPR card** (F2) fills the form.
 
@@ -46,10 +50,11 @@ Use the paper book. On the replacement PC:
 
 ## Building the installer
 From the repo root:
-1. Stage the card reader service. Copy a **working** install, with the Bahrain SDK already updated,
-   into the git-ignored `vendor\CardReadServer` folder:
-   `xcopy "C:\Program Files (x86)\CIO\GCC CardRead Server" vendor\CardReadServer\ /E /I /Y`
-   Check first that CIO GCC allows you to redistribute it.
+1. Put the vendor files in the git-ignored `SCardReadServer\` folder, which holds `SCardReadServer.exe`
+   and `Bahrain Smart Card SDK-V1.1.rar`. Extract the SDK beside them:
+   `tar -xf "SCardReadServer\Bahrain Smart Card SDK-V1.1.rar" -C SCardReadServer\BahrainSDK`
+   (create `SCardReadServer\BahrainSDK` first; Windows 10/11 `tar` reads `.rar`).
+   Check first that CIO GCC allows you to redistribute these files.
 2. Publish a self-contained single file, then compile the Inno Setup script:
 
 ```
