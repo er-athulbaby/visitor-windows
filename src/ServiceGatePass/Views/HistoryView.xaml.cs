@@ -42,6 +42,7 @@ public partial class HistoryView : UserControl
 
     void Export_Click(object sender, RoutedEventArgs e)
     {
+        Run();
         var dlg = new SaveFileDialog { Filter = "CSV (*.csv)|*.csv", FileName = $"gate-history-{DateTime.Now:yyyyMMdd-HHmm}.csv" };
         if (dlg.ShowDialog() != true) return;
         using var file = File.Create(dlg.FileName);
@@ -50,6 +51,7 @@ public partial class HistoryView : UserControl
 
     void Print_Click(object sender, RoutedEventArgs e)
     {
+        Run();
         var dlg = new PrintDialog();
         if (dlg.ShowDialog() != true) return;
         string hotel;
