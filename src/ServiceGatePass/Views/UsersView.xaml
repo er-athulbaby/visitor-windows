@@ -6,13 +6,13 @@
         <TextBlock DockPanel.Dock="Top" Text="{l:T 'Users'}" Style="{StaticResource PageTitle}" Margin="0,0,0,16"/>
 
         <!-- Add user and actions for the selected user -->
-        <ScrollViewer DockPanel.Dock="Right" Width="340" Margin="16,0,0,0" VerticalScrollBarVisibility="Auto" Focusable="False">
+        <ScrollViewer DockPanel.Dock="Right" Width="380" Margin="16,0,0,0" VerticalScrollBarVisibility="Auto" Focusable="False">
             <StackPanel>
                 <Border Style="{StaticResource Card}" Padding="18" Margin="0,0,0,16">
                     <StackPanel>
                         <TextBlock Text="{l:T 'Add user'}" Style="{StaticResource SectionTitle}" Margin="0,0,0,12"/>
                         <TextBlock Text="{l:T 'Username'}" Style="{StaticResource FieldLabel}"/>
-                        <TextBox x:Name="UsernameBox"/>
+                        <TextBox x:Name="UsernameBox" Style="{StaticResource LatinTextBox}"/>
                         <TextBlock Text="{l:T 'Display name'}" Style="{StaticResource FieldLabel}" Margin="0,12,0,5"/>
                         <TextBox x:Name="DisplayNameBox"/>
                         <TextBlock Text="{l:T 'Password'}" Style="{StaticResource FieldLabel}" Margin="0,12,0,5"/>
@@ -33,7 +33,7 @@
                             <UniformGrid.Resources>
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                     <Setter Property="Margin" Value="0,0,8,8"/>
-                                    <Setter Property="Padding" Value="10,0"/>
+                                    <Setter Property="Padding" Value="8,0"/>
                                 </Style>
                             </UniformGrid.Resources>
                             <Button Content="{l:T 'Reset password'}" Click="Reset_Click"/>
@@ -55,7 +55,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="{l:T 'Display name'}" Binding="{Binding DisplayName}" Width="*" ElementStyle="{StaticResource CellStrong}"/>
                     <DataGridTextColumn Header="{l:T 'Username'}" Binding="{Binding Username}" Width="*" ElementStyle="{StaticResource CellMuted}"/>
-                    <DataGridTextColumn Header="{l:T 'Role'}" Binding="{Binding RoleText}" Width="Auto" MinWidth="110" ElementStyle="{StaticResource CellText}"/>
+                    <DataGridTextColumn Header="{l:T 'Role'}" Binding="{Binding RoleText}" Width="Auto" MinWidth="110" ElementStyle="{StaticResource CellLocal}"/>
                     <DataGridTemplateColumn Header="{l:T 'Active'}" Width="Auto" MinWidth="90" SortMemberPath="IsActive">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

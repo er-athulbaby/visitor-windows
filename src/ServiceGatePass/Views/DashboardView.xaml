@@ -25,7 +25,7 @@
         <!-- Name, thin bar, count. The list's Tag is the bar colour. -->
         <DataTemplate x:Key="TopRow">
             <DockPanel Margin="0,0,0,10">
-                <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" Width="150" FontSize="13" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" Style="{StaticResource LatinText}" Width="150" FontSize="13" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
                 <TextBlock DockPanel.Dock="Right" Text="{Binding Count}" Width="40" FontSize="13" FontWeight="SemiBold" TextAlignment="Right" VerticalAlignment="Center"/>
                 <ProgressBar Value="{Binding Count, Mode=OneWay}" Maximum="{Binding Max, Mode=OneWay}" Margin="10,0"
                              Foreground="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>

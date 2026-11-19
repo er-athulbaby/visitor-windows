@@ -46,10 +46,10 @@
                             <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
                                 <TextBlock Text="{l:T 'Number of slots'}" FontSize="13" Foreground="{StaticResource SecondaryTextBrush}"
                                            VerticalAlignment="Center" Margin="0,0,12,0"/>
-                                <TextBox x:Name="SlotCountBox" Width="80" MinHeight="36" FontWeight="SemiBold"/>
+                                <TextBox x:Name="SlotCountBox" Style="{StaticResource LatinTextBox}" Width="80" MinHeight="36" FontWeight="SemiBold"/>
                             </StackPanel>
                             <TextBlock Text="{l:T 'Card reader URL'}" Style="{StaticResource FieldLabel}" Margin="0,14,0,5"/>
-                            <TextBox x:Name="ReaderBox" FontSize="13" FlowDirection="LeftToRight"/>
+                            <TextBox x:Name="ReaderBox" FontSize="13" Style="{StaticResource LatinTextBox}"/>
                         </StackPanel>
                     </Border>
 
@@ -60,7 +60,7 @@
                             <TextBlock Text="{l:T 'Backup folder'}" Style="{StaticResource FieldLabel}"/>
                             <DockPanel>
                                 <Button DockPanel.Dock="Right" Content="{l:T 'Choose…'}" Click="ChooseFolder_Click" Margin="8,0,0,0"/>
-                                <TextBox x:Name="BackupBox" FlowDirection="LeftToRight"/>
+                                <TextBox x:Name="BackupBox" Style="{StaticResource LatinTextBox}"/>
                             </DockPanel>
                         </StackPanel>
                     </Border>
@@ -80,7 +80,7 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="{l:T 'Name (English)'}" Style="{StaticResource FieldLabel}"/>
-                                    <TextBox x:Name="LocNameBox"/>
+                                    <TextBox x:Name="LocNameBox" Style="{StaticResource LatinTextBox}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Text="{l:T 'Name (Arabic)'}" Style="{StaticResource FieldLabel}"/>
@@ -116,7 +116,7 @@
                                         </Border>
                                         <TextBlock DockPanel.Dock="Right" Text="{Binding NameAr}" Foreground="{StaticResource SecondaryTextBrush}"
                                                    FlowDirection="RightToLeft" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="NameText" Text="{Binding Name}" VerticalAlignment="Center"
+                                        <TextBlock x:Name="NameText" Style="{StaticResource LatinText}" Text="{Binding Name}" VerticalAlignment="Center"
                                                    TextTrimming="CharacterEllipsis"/>
                                     </DockPanel>
                                     <DataTemplate.Triggers>

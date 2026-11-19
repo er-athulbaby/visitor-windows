@@ -63,7 +63,7 @@
                         </Grid.RowDefinitions>
                         <StackPanel>
                             <TextBlock Text="{l:T 'Username'}" Style="{StaticResource FieldLabel}"/>
-                            <TextBox x:Name="UsernameBox"/>
+                            <TextBox x:Name="UsernameBox" Style="{StaticResource LatinTextBox}"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="{l:T 'Display name'}" Style="{StaticResource FieldLabel}"/>

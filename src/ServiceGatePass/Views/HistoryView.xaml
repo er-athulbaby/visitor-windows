@@ -37,7 +37,7 @@
                 </StackPanel>
                 <StackPanel>
                     <TextBlock Text="{l:T 'Company'}" Style="{StaticResource FieldLabel}"/>
-                    <TextBox x:Name="CompanyBox" Width="170"/>
+                    <TextBox x:Name="CompanyBox" Width="170" Style="{StaticResource LatinTextBox}"/>
                 </StackPanel>
                 <StackPanel>
                     <Button Content="{l:T 'Show'}" Click="Show_Click" Style="{StaticResource DarkButton}" Padding="18,0"/>
@@ -65,7 +65,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid VerticalAlignment="Center">
-                                        <TextBlock x:Name="OutText" Text="{Binding CheckOutAt, StringFormat='yyyy-MM-dd HH:mm'}"/>
+                                        <TextBlock x:Name="OutText" Style="{StaticResource CellText}" Text="{Binding CheckOutAt, StringFormat='yyyy-MM-dd HH:mm'}"/>
                                         <Border x:Name="InsidePill" Style="{StaticResource AmberPill}" Visibility="Collapsed">
                                             <TextBlock Text="{l:T 'Inside'}"/>
                                         </Border>

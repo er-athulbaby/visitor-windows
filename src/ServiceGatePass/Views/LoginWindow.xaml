@@ -50,7 +50,7 @@
             <TextBlock Text="{l:T 'Use your gate staff account.'}" Style="{StaticResource SecondaryText}" Margin="0,6,0,0"/>
 
             <TextBlock Text="{l:T 'Username'}" FontSize="13" FontWeight="Medium" Foreground="#3B4A58" Margin="0,24,0,6"/>
-            <TextBox x:Name="UsernameBox" MinHeight="46" FontSize="15"/>
+            <TextBox x:Name="UsernameBox" Style="{StaticResource LatinTextBox}" MinHeight="46" FontSize="15"/>
             <TextBlock Text="{l:T 'Password'}" FontSize="13" FontWeight="Medium" Foreground="#3B4A58" Margin="0,16,0,6"/>
             <PasswordBox x:Name="PasswordInput" MinHeight="46" FontSize="15"/>
             <TextBlock x:Name="ErrorText" Style="{StaticResource ErrorText}" Margin="0,12,0,0"/>
