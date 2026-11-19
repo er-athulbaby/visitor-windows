@@ -14,7 +14,7 @@
             <StackPanel KeyDown="CheckInPanel_KeyDown">
                 <TextBlock Text="{l:T 'Check in'}" FontSize="22" FontWeight="Bold" Margin="0,0,0,8"/>
                 <DockPanel Margin="0,0,0,8">
-                    <Image x:Name="Photo" DockPanel.Dock="Right" Width="90" Height="110" Stretch="Uniform"/>
+                    <Image x:Name="Photo" FlowDirection="LeftToRight" DockPanel.Dock="Right" Width="90" Height="110" Stretch="Uniform"/>
                     <StackPanel>
                         <Button x:Name="ReadButton" Content="{l:T 'Read card (F2)'}" Click="ReadCard_Click" Padding="16,10" HorizontalAlignment="Left"/>
                         <TextBlock x:Name="ReaderMessage" Foreground="DarkRed" TextWrapping="Wrap" Margin="0,6,0,0"/>

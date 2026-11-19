@@ -40,7 +40,7 @@
         </StackPanel>
         <DockPanel Grid.Row="1" Margin="0,12">
             <TextBlock DockPanel.Dock="Top" Text="{l:T 'Visits per day (last 30 days)'}" FontWeight="Bold"/>
-            <lvc:CartesianChart x:Name="Chart" MinHeight="250"/>
+            <lvc:CartesianChart x:Name="Chart" FlowDirection="LeftToRight" MinHeight="250"/>
         </DockPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

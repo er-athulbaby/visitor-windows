@@ -16,7 +16,7 @@
                 <TextBlock Text="{l:T 'Logo'}" Margin="0,8,0,0"/>
                 <StackPanel Orientation="Horizontal">
                     <Button Content="{l:T 'Choose…'}" Click="ChooseLogo_Click" Padding="10,4"/>
-                    <Image x:Name="LogoImage" Height="40" Margin="12,0,0,0"/>
+                    <Image x:Name="LogoImage" FlowDirection="LeftToRight" Height="40" Margin="12,0,0,0"/>
                 </StackPanel>
                 <CheckBox x:Name="BadgeBox" Content="{l:T 'Use badge numbers'}" Margin="0,12,0,0"/>
                 <CheckBox x:Name="SlotBox" Content="{l:T 'Use card slot numbers'}" Margin="0,8,0,0"/>
