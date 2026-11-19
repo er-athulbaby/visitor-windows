@@ -13,5 +13,9 @@
   "Badge {0} is already in use.": "الشارة {0} مستخدمة بالفعل.",
   "Slot {0} is already in use.": "الخانة {0} مستخدمة بالفعل.",
   "Visit not found.": "الزيارة غير موجودة.",
-  "Already checked out.": "تم تسجيل الخروج مسبقًا."
+  "Already checked out.": "تم تسجيل الخروج مسبقًا.",
+  "Card reader returned HTTP {0}.": "أعاد قارئ البطاقات الخطأ HTTP {0}.",
+  "Card reader service is not running — start CIO GCC CardRead Server.": "خدمة قارئ البطاقات لا تعمل — شغّل CIO GCC CardRead Server.",
+  "Card reader sent an unreadable reply.": "أرسل قارئ البطاقات ردًا غير مفهوم.",
+  "No card detected. Enter CPR manually.": "لم يتم العثور على بطاقة. أدخل الرقم الشخصي يدويًا."
 }
