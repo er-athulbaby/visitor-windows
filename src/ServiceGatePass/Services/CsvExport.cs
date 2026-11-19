@@ -16,10 +16,14 @@ public static class CsvExport
         foreach (var r in rows)
             w.WriteLine(string.Join(",", new[]
             {
-                r.Name, r.Cpr, r.Location, r.Company, r.Note, r.BadgeNo?.ToString(), r.SlotNo?.ToString(),
-                r.CheckInAt.ToString(Time), r.CheckOutAt?.ToString(Time), r.CheckInBy, r.CheckOutBy,
-            }.Select(Cell)));
+                Cell(r.Name), CprCell(r.Cpr), Cell(r.Location), Cell(r.Company), Cell(r.Note), Cell(r.BadgeNo?.ToString()), Cell(r.SlotNo?.ToString()),
+                Cell(r.CheckInAt.ToString(Time)), Cell(r.CheckOutAt?.ToString(Time)), Cell(r.CheckInBy), Cell(r.CheckOutBy),
+            }));
     }
+
+    /// Excel drops leading zeros; a 9-digit CPR is written as ="050000001" so it stays text.
+    public static string CprCell(string? v) =>
+        v is { Length: 9 } && v.All(char.IsAsciiDigit) ? "=\"" + v + "\"" : Cell(v);
 
     public static string Cell(string? value)
     {

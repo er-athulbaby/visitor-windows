@@ -29,7 +29,7 @@ public class CsvExportTests
     {
         var lines = Encoding.UTF8.GetString(Export()).TrimStart('﻿').Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
         Assert.Equal("Name,CPR,Location,Company,Note,Badge,Slot,Check-in,Check-out,Checked in by,Checked out by", lines[0]);
-        Assert.Equal("علي حسن,900000001,Kitchen,'=SUM(A1),\"a, \"\"b\"\"\",5,3,2026-11-19 09:12,,Guard One,", lines[1]);
+        Assert.Equal("علي حسن,=\"900000001\",Kitchen,'=SUM(A1),\"a, \"\"b\"\"\",5,3,2026-11-19 09:12,,Guard One,", lines[1]);
     }
 
     [Theory]
@@ -42,4 +42,18 @@ public class CsvExportTests
     [InlineData(null, "")]
     public void Cell_blocks_formula_injection(string? input, string expected) =>
         Assert.Equal(expected, CsvExport.Cell(input));
+
+    [Fact]
+    public void Leading_zero_cpr_is_written_as_text_formula()
+    {
+        using var ms = new MemoryStream();
+        CsvExport.Write(ms, [Row with { Cpr = "050000001" }]);
+        Assert.Contains(",=\"050000001\",", Encoding.UTF8.GetString(ms.ToArray()));
+    }
+
+    [Theory]
+    [InlineData("12345678", "12345678")]
+    [InlineData("=1+1", "'=1+1")]
+    public void Cpr_cell_only_formula_for_nine_digits(string cpr, string expected) =>
+        Assert.Equal(expected, CsvExport.CprCell(cpr));
 }
