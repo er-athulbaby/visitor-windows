@@ -23,6 +23,7 @@ public partial class MainWindow : Window
         {
             Tabs.Items.Add(new TabItem { Header = L.T("History"), Content = new HistoryView() });
             Tabs.Items.Add(new TabItem { Header = L.T("Dashboard"), Content = new DashboardView() });
+            Tabs.Items.Add(new TabItem { Header = L.T("Settings"), Content = new SettingsView() });
         }
         Tabs.SelectedIndex = Math.Min(selectedTab, Tabs.Items.Count - 1);
 
