@@ -1,21 +1,32 @@
 # Installing Service Gate Pass
 
-## 1. Card reader service (once per PC)
-1. Copy the `SCardReadServer` folder to the PC.
-2. Run `SCardReadServer.exe` — this installs and starts the Windows service "CIO GCC CardRead Server".
-3. New Bahrain cards: stop the service, replace its SDK files with the ones from
-   `Bahrain Smart Card SDK-V1.1.rar`, start the service again.
-4. If a "CAS policy" `NotSupportedException` appears, open
-   `Bahrain Smart Card SDK\DotNet\Extensions\BAH`, and for each file:
-   right-click → Properties → tick **Unblock** → OK.
-5. Check: with a card inserted, the app's **Read card** button fills the form.
+## Install on a new PC
+1. Plug in the CPR card reader.
+2. Run `ServiceGatePass-Setup-<version>.exe` as an administrator. If the card reader service is not
+   installed yet, Setup shows **Install the CPR card reader service**, ticked by default. Leave it ticked.
+   Setup then copies the service, with the Bahrain SDK included, to
+   `C:\Program Files (x86)\CIO\GCC CardRead Server`, and registers and starts the Windows service
+   "CIO GCC CardRead Server". The option is hidden when the service is already installed.
+   Silent install including the service: `ServiceGatePass-Setup-<version>.exe /SILENT /TASKS="cardreader"`.
+3. On first start, fill in the hotel name, logo, locations and the first admin account.
+4. Check: with a card inserted, **Read CPR card** (F2) fills the form.
 
-## 2. The app
-1. Run `ServiceGatePass-Setup-<version>.exe` as an administrator.
-2. On first start, fill in the hotel name, logo, locations and the first admin account.
-3. Sign in as the admin → **Settings** → choose a **Backup folder** (a USB drive or network
+Uninstalling Service Gate Pass leaves the card reader service in place, because other software may
+use it. To remove it, use the vendor's `Uninstall.exe` in its folder.
+
+### Card reader service by hand (only if you unticked the option)
+1. Copy the vendor's `SCardReadServer` folder to the PC and run `SCardReadServer.exe`.
+2. For new Bahrain cards: stop the service, replace its SDK files with the ones from
+   `Bahrain Smart Card SDK-V1.1.rar`, then start the service again.
+3. If a "CAS policy" `NotSupportedException` appears, open
+   `Bahrain Smart Card SDK\DotNet\Extensions\BAH`. For each file: right-click → Properties →
+   tick **Unblock** → OK.
+
+## After installing
+1. Sign in as the admin.
+2. **Settings** → choose a **Backup folder** (a USB drive or network
    share) → **Save**. A copy is made immediately and then every day; the newest 30 are kept.
-4. **Users** → add one account per guard (role: Gate staff).
+3. **Users** → add one account per guard (role: Gate staff).
 
 ## Where data lives
 - Database: `C:\ProgramData\ServiceGatePass\gate.db`
@@ -34,7 +45,12 @@ Use the paper book. On the replacement PC:
 4. Start the app and check that recent visits appear in **History**.
 
 ## Building the installer
-From the repo root, publish a self-contained single file, then compile the Inno Setup script:
+From the repo root:
+1. Stage the card reader service. Copy a **working** install, with the Bahrain SDK already updated,
+   into the git-ignored `vendor\CardReadServer` folder:
+   `xcopy "C:\Program Files (x86)\CIO\GCC CardRead Server" vendor\CardReadServer\ /E /I /Y`
+   Check first that CIO GCC allows you to redistribute it.
+2. Publish a self-contained single file, then compile the Inno Setup script:
 
 ```
 dotnet publish src/ServiceGatePass -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish

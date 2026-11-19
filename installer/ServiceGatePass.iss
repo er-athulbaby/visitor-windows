@@ -20,12 +20,26 @@ UninstallDisplayIcon={app}\ServiceGatePass.exe
 ; Every Windows user on the gate PC must be able to write the database, backups-before-upgrade and logs.
 Name: "{commonappdata}\ServiceGatePass"; Permissions: users-modify
 
+[Tasks]
+; Shown only when the CPR card reader service is not installed yet. Ticked by default.
+Name: "cardreader"; Description: "Install the CPR card reader service (CIO GCC CardRead Server)"; Check: not CardReaderInstalled
+
 [Files]
 Source: "..\publish\*"; Excludes: "*.pdb"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+; Copy of a working card reader install, Bahrain SDK included. Staged into ..\vendor\CardReadServer before building (see docs/install.md).
+Source: "..\vendor\CardReadServer\*"; Excludes: "*.InstallLog"; DestDir: "{commonpf32}\CIO\GCC CardRead Server"; Flags: ignoreversion recursesubdirs createallsubdirs uninsneveruninstall; Tasks: cardreader
 
 [Icons]
 Name: "{group}\Service Gate Pass"; Filename: "{app}\ServiceGatePass.exe"
 Name: "{autodesktop}\Service Gate Pass"; Filename: "{app}\ServiceGatePass.exe"
 
 [Run]
+Filename: "{sys}\sc.exe"; Parameters: "create SCardReadServer binPath= ""\""{commonpf32}\CIO\GCC CardRead Server\SCardReadWebApi.exe\"""" start= auto DisplayName= ""CIO GCC CardRead Server"""; StatusMsg: "Installing the card reader service..."; Flags: runhidden waituntilterminated; Tasks: cardreader
+Filename: "{sys}\sc.exe"; Parameters: "start SCardReadServer"; StatusMsg: "Starting the card reader service..."; Flags: runhidden waituntilterminated; Tasks: cardreader
 Filename: "{app}\ServiceGatePass.exe"; Description: "Start Service Gate Pass"; Flags: nowait postinstall skipifsilent
+
+[Code]
+function CardReaderInstalled: Boolean;
+begin
+  Result := RegKeyExists(HKLM, 'SYSTEM\CurrentControlSet\Services\SCardReadServer');
+end;
