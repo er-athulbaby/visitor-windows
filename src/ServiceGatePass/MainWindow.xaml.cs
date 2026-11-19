@@ -1,23 +1,70 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ServiceGatePass.Data;
+using ServiceGatePass.Services;
+using ServiceGatePass.Views;
 
 namespace ServiceGatePass;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    bool replacing;
+
+    public MainWindow(int selectedTab = 0)
     {
         InitializeComponent();
+        FlowDirection = L.IsArabic ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+        UserName.Text = App.CurrentUser.DisplayName;
+        LanguageButton.Content = L.IsArabic ? "English" : "العربية";
+        RefreshHeader();
+
+        Tabs.Items.Add(new TabItem { Header = L.T("Gate"), Content = new Grid() });
+        Tabs.SelectedIndex = Math.Min(selectedTab, Tabs.Items.Count - 1);
+
+        App.BackupStatusChanged += ShowBackupStatus;
+        ShowBackupStatus();
+        Closed += (_, _) =>
+        {
+            App.BackupStatusChanged -= ShowBackupStatus;
+            if (!replacing) Application.Current.Shutdown();
+        };
+    }
+
+    public void RefreshHeader()
+    {
+        using var db = App.OpenDb();
+        var settings = new SettingsStore(db);
+        HotelName.Text = settings.Get(SettingsStore.HotelName) ?? "";
+        Logo.Source = App.LoadImage(settings.Get(SettingsStore.LogoPath));
+        Title = $"Service Gate Pass — {HotelName.Text}";
+    }
+
+    void ShowBackupStatus()
+    {
+        var message = App.BackupError
+            ?? (App.BackupFolderMissing && App.CurrentUser.Role == Role.Admin
+                ? L.T("No backup folder is set. Choose one in Settings.")
+                : null);
+        Banner.Text = message ?? "";
+        BannerBar.Visibility = message == null ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    void Language_Click(object sender, RoutedEventArgs e)
+    {
+        var lang = L.IsArabic ? "en" : "ar";
+        using (var db = App.OpenDb()) new SettingsStore(db).Set(SettingsStore.Language, lang);
+        L.Use(lang);
+        var next = new MainWindow(Tabs.SelectedIndex);
+        replacing = true;
+        Application.Current.MainWindow = next;
+        next.Show();
+        Close();
+    }
+
+    void Logout_Click(object sender, RoutedEventArgs e)
+    {
+        replacing = true;
+        Close();
+        ((App)Application.Current).ShowLogin();
     }
 }
