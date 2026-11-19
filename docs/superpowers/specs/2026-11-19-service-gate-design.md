@@ -53,6 +53,7 @@ One window with two panels, always visible.
 
 - If the reader fails, its error is shown in plain words and staff can type
   the name and CPR by hand.
+- The CPR must be exactly 9 digits (this catches typos in manual entry).
 - If the CPR is already inside, check-in is refused with the current location
   and time ("Already inside at Kitchen since 09:12").
 
@@ -84,9 +85,12 @@ returns to it so the next shift's guard can sign in.
 ### 3.4 Language
 
 An English/Arabic switch in the window header. Arabic sets
-`FlowDirection=RightToLeft` for the whole window. Strings live in resource
-files (`Strings.resx`, `Strings.ar.resx`); the Arabic text is ported from
-VisitorPass `lang/ar.json` where it fits.
+`FlowDirection=RightToLeft` for the whole window. English text is the key,
+as in VisitorPass. Arabic lives in one embedded `Resources/ar.json`, ported
+from VisitorPass `lang/ar.json` where it fits. Code calls `L.T("...")` and
+XAML uses `{l:T '...'}`. A test fails if any of those strings has no Arabic
+entry. (This replaces .resx files, whose generated code doesn't build from
+the `dotnet` CLI.)
 
 ## 4. Data and storage
 
@@ -190,7 +194,7 @@ src/ServiceGatePass/          WPF app
   Data/                       GateDb (DbContext), entities, migrations
   Services/                   CardReader, GateService, BackupService, CsvExport, PasswordHasher
   Views/                      GateView, HistoryView, DashboardView, SettingsView, UsersView, SetupWizard, LoginView
-  Resources/                  Strings.resx, Strings.ar.resx
+  Resources/                  L.cs (translation lookup + {l:T} markup extension), ar.json
 tests/ServiceGatePass.Tests/  xUnit
 ```
 
