@@ -21,7 +21,7 @@
                     </StackPanel>
                 </DockPanel>
                 <TextBlock Text="{l:T 'CPR'}"/>
-                <TextBox x:Name="Cpr" MaxLength="9" LostFocus="Cpr_LostFocus"/>
+                <TextBox x:Name="Cpr" MaxLength="9" LostFocus="Cpr_LostFocus" TextChanged="Cpr_TextChanged"/>
                 <TextBlock Text="{l:T 'Name'}" Margin="0,8,0,0"/>
                 <TextBox x:Name="NameEn"/>
                 <TextBlock x:Name="NameArText" Margin="0,4,0,0"/>

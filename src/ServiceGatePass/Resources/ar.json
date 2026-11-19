@@ -115,5 +115,7 @@
   "Make gate staff": "تعيين كموظف بوابة",
   "Done.": "تم.",
   "Select a user first.": "اختر مستخدمًا أولًا.",
+  "All card slots are full.": "كل خانات البطاقات ممتلئة.",
+  "{0} checked in. Put the CPR card in slot {1}.": "تم تسجيل دخول {0}. ضع البطاقة الشخصية في الخانة {1}.",
   "Users": "المستخدمون"
 }

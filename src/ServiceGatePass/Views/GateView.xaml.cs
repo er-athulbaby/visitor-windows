@@ -88,6 +88,7 @@ public partial class GateView : UserControl
 
     async void ReadCard_Click(object? sender, RoutedEventArgs? e)
     {
+        ClearForm();
         ReadButton.IsEnabled = false;
         ReaderMessage.Text = L.T("Reading card…");
         try
@@ -134,6 +135,14 @@ public partial class GateView : UserControl
         if (visitor.LastLocationId is int id) Locations.SelectedValue = id;
     }
 
+    /// Name, Arabic name, employer and photo belong to the previous card once the CPR is edited.
+    void Cpr_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        nameAr = employer = null;
+        NameArText.Text = "";
+        Photo.Source = null;
+    }
+
     void Cpr_LostFocus(object sender, RoutedEventArgs e)
     {
         if (Cpr.Text.Trim().Length == 9 && NameEn.Text.Trim() == "") Prefill(fromCard: false);
@@ -141,7 +150,8 @@ public partial class GateView : UserControl
 
     void CheckIn_Click(object? sender, RoutedEventArgs? e)
     {
-        int? badge = null;
+        if (slotOn && Slot.SelectedItem is null) Show(CheckInMessage, L.T("All card slots are full."), error: true);
+        int? badge = null, usedSlot = null;
         if (badgeOn && Badge.Text.Trim() != "")
         {
             if (!int.TryParse(Badge.Text.Trim(), out var b) || b <= 0)
@@ -155,9 +165,10 @@ public partial class GateView : UserControl
         try
         {
             using var db = App.OpenDb();
+            usedSlot = slotOn ? Slot.SelectedItem as int? : null;
             new GateService(db).CheckIn(new CheckInRequest(Cpr.Text, NameEn.Text, nameAr, employer,
                 Locations.SelectedValue as int? ?? 0, Company.Text, Note.Text, badge,
-                slotOn ? Slot.SelectedItem as int? : null, App.CurrentUser.Id));
+                usedSlot, App.CurrentUser.Id));
         }
         catch (GateException ex)
         {
@@ -168,7 +179,9 @@ public partial class GateView : UserControl
         var name = NameEn.Text.Trim();
         ClearForm();
         LoadInside();
-        Show(CheckInMessage, string.Format(L.T("{0} checked in."), name), error: false);
+        Show(CheckInMessage, usedSlot is int s
+            ? string.Format(L.T("{0} checked in. Put the CPR card in slot {1}."), name, s)
+            : string.Format(L.T("{0} checked in."), name), error: false);
         Cpr.Focus();
     }
 
@@ -205,7 +218,7 @@ public partial class GateView : UserControl
 
     void Search_KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Enter && InsideGrid.ItemsSource is List<InsideRow> { Count: 1 } rows)
+        if (e.Key == Key.Enter && Search.Text.Trim() != "" && InsideGrid.ItemsSource is List<InsideRow> { Count: 1 } rows)
         {
             CheckOut(rows[0]);
             e.Handled = true;
@@ -221,9 +234,17 @@ public partial class GateView : UserControl
 
     void View_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key != Key.F2) return;
-        ReadCard_Click(null, null);
-        e.Handled = true;
+        if (e.Key == Key.F2)
+        {
+            if (ReadButton.IsEnabled) ReadCard_Click(null, null);
+            e.Handled = true;
+        }
+        else if (e.Key == Key.Escape)
+        {
+            ClearForm();
+            Cpr.Focus();
+            e.Handled = true;
+        }
     }
 
     static void Show(TextBlock target, string message, bool error)
