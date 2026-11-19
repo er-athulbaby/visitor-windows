@@ -2,10 +2,10 @@ using System.Security.Cryptography;
 
 namespace ServiceGatePass.Services;
 
-/// Stored as "base64(salt).base64(hash)", PBKDF2-SHA256, 100k iterations.
+/// Stored as "base64(salt).base64(hash)", PBKDF2-SHA256, 600k iterations.
 public static class PasswordHasher
 {
-    const int Iterations = 100_000;
+    const int Iterations = 600_000;
 
     public static string Hash(string password)
     {
