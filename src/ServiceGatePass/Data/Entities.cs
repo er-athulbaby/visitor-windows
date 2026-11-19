@@ -37,6 +37,7 @@ public class Location
     public int Id { get; set; }
     public string Name { get; set; } = "";
     public string? NameAr { get; set; }
+    public string Display => L.IsArabic && !string.IsNullOrWhiteSpace(NameAr) ? NameAr! : Name;
     public int SortOrder { get; set; }
     public bool IsActive { get; set; } = true;
 }
