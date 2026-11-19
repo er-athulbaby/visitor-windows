@@ -22,6 +22,7 @@ public partial class MainWindow : Window
         if (App.CurrentUser.Role == Role.Admin)
         {
             Tabs.Items.Add(new TabItem { Header = L.T("History"), Content = new HistoryView() });
+            Tabs.Items.Add(new TabItem { Header = L.T("Dashboard"), Content = new DashboardView() });
         }
         Tabs.SelectedIndex = Math.Min(selectedTab, Tabs.Items.Count - 1);
 

@@ -72,5 +72,11 @@
   "Checked out by": "سجل الخروج بواسطة",
   "Gate history": "سجل البوابة",
   "Inside": "بالداخل",
-  "History": "السجل"
+  "History": "السجل",
+  "Visits today": "زيارات اليوم",
+  "Visits per day (last 30 days)": "الزيارات يوميًا (آخر 30 يومًا)",
+  "Top locations": "أكثر المواقع زيارة",
+  "Top companies": "أكثر الشركات زيارة",
+  "Visits": "الزيارات",
+  "Dashboard": "لوحة المعلومات"
 }

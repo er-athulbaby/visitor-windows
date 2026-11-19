@@ -1,0 +1,61 @@
+<UserControl x:Class="ServiceGatePass.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:ServiceGatePass"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             Loaded="View_Loaded">
+    <UserControl.Resources>
+        <Style x:Key="Tile" TargetType="Border">
+            <Setter Property="Background" Value="#F3F4F6"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+            <Setter Property="MinWidth" Value="200"/>
+        </Style>
+        <DataTemplate x:Key="NameCountRow">
+            <DockPanel Margin="0,2">
+                <TextBlock DockPanel.Dock="Right" Text="{Binding Count}" FontWeight="Bold" Margin="12,0,0,0"/>
+                <TextBlock Text="{Binding Name}"/>
+            </DockPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Border Style="{StaticResource Tile}">
+                <StackPanel>
+                    <TextBlock Text="{l:T 'Visits today'}"/>
+                    <TextBlock x:Name="TodayText" FontSize="36" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Tile}">
+                <StackPanel>
+                    <TextBlock Text="{l:T 'Inside now'}"/>
+                    <TextBlock x:Name="InsideText" FontSize="36" FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <DockPanel Grid.Row="1" Margin="0,12">
+            <TextBlock DockPanel.Dock="Top" Text="{l:T 'Visits per day (last 30 days)'}" FontWeight="Bold"/>
+            <lvc:CartesianChart x:Name="Chart" MinHeight="250"/>
+        </DockPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="{l:T 'Top locations'}" FontWeight="Bold" Margin="0,0,0,4"/>
+                <ItemsControl x:Name="TopLocations" ItemTemplate="{StaticResource NameCountRow}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="{l:T 'Top companies'}" FontWeight="Bold" Margin="0,0,0,4"/>
+                <ItemsControl x:Name="TopCompanies" ItemTemplate="{StaticResource NameCountRow}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>
