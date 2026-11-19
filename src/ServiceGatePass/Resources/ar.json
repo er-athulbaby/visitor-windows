@@ -83,7 +83,6 @@
   "Card reader URL": "عنوان قارئ البطاقات",
   "Save": "حفظ",
   "Locations": "المواقع",
-  "(hidden)": "(مخفي)",
   "Name (English)": "الاسم (إنجليزي)",
   "Name (Arabic)": "الاسم (عربي)",
   "Add": "إضافة",
@@ -129,5 +128,10 @@
   "You can change all of this later in Settings.": "يمكنك تغيير كل ذلك لاحقًا من الإعدادات.",
   "Name or CPR": "الاسم أو الرقم الشخصي",
   "Visits, 30 days": "الزيارات، 30 يومًا",
-  "Today": "اليوم"
+  "Today": "اليوم",
+  "Hotel": "الفندق",
+  "At the gate": "عند البوابة",
+  "Backups": "النسخ الاحتياطي",
+  "Hidden": "مخفي",
+  "Reset password uses the Password field above.": "إعادة تعيين كلمة المرور تستخدم حقل كلمة المرور أعلاه."
 }

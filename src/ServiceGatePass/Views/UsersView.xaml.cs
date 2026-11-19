@@ -26,7 +26,7 @@ public partial class UsersView : UserControl
     void Msg(string text, bool error)
     {
         MessageText.Text = text;
-        MessageText.Foreground = error ? Brushes.DarkRed : Brushes.DarkGreen;
+        MessageText.Foreground = (Brush)FindResource(error ? "ErrorBrush" : "SuccessBrush");
     }
 
     bool Act(Action<UserService> action)

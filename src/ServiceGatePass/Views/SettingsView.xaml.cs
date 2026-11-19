@@ -37,7 +37,7 @@ public partial class SettingsView : UserControl
     void Msg(string text, bool error)
     {
         MessageText.Text = text;
-        MessageText.Foreground = error ? Brushes.DarkRed : Brushes.DarkGreen;
+        MessageText.Foreground = (Brush)FindResource(error ? "ErrorBrush" : "SuccessBrush");
     }
 
     void ChooseLogo_Click(object sender, RoutedEventArgs e)
