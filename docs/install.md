@@ -32,3 +32,11 @@ Use the paper book. On the replacement PC:
 2. In `C:\ProgramData\ServiceGatePass`, delete `gate.db`, `gate.db-wal` and `gate.db-shm`.
 3. Copy the newest `gate-YYYY-MM-DD.db` from the backup folder into that folder and rename it to `gate.db`.
 4. Start the app and check that recent visits appear in **History**.
+
+## Building the installer
+From the repo root, publish a self-contained single file, then compile the Inno Setup script:
+
+```
+dotnet publish src/ServiceGatePass -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
+"<Inno Setup 6>\ISCC.exe" installer/ServiceGatePass.iss
+```
