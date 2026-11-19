@@ -18,7 +18,7 @@ public partial class MainWindow : Window
         LanguageButton.Content = L.IsArabic ? "English" : "العربية";
         RefreshHeader();
 
-        Tabs.Items.Add(new TabItem { Header = L.T("Gate"), Content = new Grid() });
+        Tabs.Items.Add(new TabItem { Header = L.T("Gate"), Content = new GateView() });
         Tabs.SelectedIndex = Math.Min(selectedTab, Tabs.Items.Count - 1);
 
         App.BackupStatusChanged += ShowBackupStatus;
