@@ -22,7 +22,19 @@ public partial class HistoryView : UserControl
         locations.AddRange(db.Locations.OrderBy(l => l.SortOrder).ToList().Select(l => new LocationItem(l.Id, l.Display)));
         LocationBox.ItemsSource = locations;
         LocationBox.SelectedIndex = 0;
-        Run();
+        // Reload whenever the tab is opened (TabControl re-loads its content on every switch)
+        // and when a date or location filter changes; text filters still use Show / Enter.
+        Loaded += (_, _) => Run();
+        FromDate.SelectedDateChanged += (_, _) => Run();
+        ToDate.SelectedDateChanged += (_, _) => Run();
+        LocationBox.SelectionChanged += (_, _) => Run();
+        SearchBox.KeyDown += RunOnEnter;
+        CompanyBox.KeyDown += RunOnEnter;
+    }
+
+    void RunOnEnter(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        if (e.Key == System.Windows.Input.Key.Enter) Run();
     }
 
     void Run()
