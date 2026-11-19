@@ -2,60 +2,120 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:ServiceGatePass"
-             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              Loaded="View_Loaded">
     <UserControl.Resources>
-        <Style x:Key="Tile" TargetType="Border">
-            <Setter Property="Background" Value="#F3F4F6"/>
+        <Style x:Key="DashTile" TargetType="Border" BasedOn="{StaticResource StatTile}">
+            <Setter Property="CornerRadius" Value="16"/>
             <Setter Property="Padding" Value="16"/>
             <Setter Property="Margin" Value="0,0,12,0"/>
-            <Setter Property="MinWidth" Value="200"/>
         </Style>
-        <DataTemplate x:Key="NameCountRow">
-            <DockPanel Margin="0,2">
-                <TextBlock DockPanel.Dock="Right" Text="{Binding Count}" FontWeight="Bold" Margin="12,0,0,0"/>
-                <TextBlock Text="{Binding Name}"/>
+        <Style x:Key="DashTileAmber" TargetType="Border" BasedOn="{StaticResource StatTileAmber}">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,12,0"/>
+        </Style>
+        <Style x:Key="DashLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Opacity" Value="0.85"/>
+        </Style>
+        <Style x:Key="DashValue" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <!-- Name, thin bar, count. The list's Tag is the bar colour. -->
+        <DataTemplate x:Key="TopRow">
+            <DockPanel Margin="0,0,0,10">
+                <TextBlock DockPanel.Dock="Left" Text="{Binding Name}" Width="150" FontSize="13" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                <TextBlock DockPanel.Dock="Right" Text="{Binding Count}" Width="40" FontSize="13" FontWeight="SemiBold" TextAlignment="Right" VerticalAlignment="Center"/>
+                <ProgressBar Value="{Binding Count, Mode=OneWay}" Maximum="{Binding Max, Mode=OneWay}" Margin="10,0"
+                             Foreground="{Binding Tag, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
             </DockPanel>
         </DataTemplate>
     </UserControl.Resources>
-    <Grid Margin="12">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
-            <Border Style="{StaticResource Tile}">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Focusable="False">
+        <StackPanel Margin="28,24">
+            <TextBlock Text="{l:T 'Dashboard'}" Style="{StaticResource PageTitle}" Margin="0,0,0,16"/>
+
+            <UniformGrid Rows="1" Margin="0,0,-12,16">
+                <Border Style="{StaticResource DashTile}">
+                    <StackPanel>
+                        <TextBlock Text="{l:T 'Visits today'}" Style="{StaticResource DashLabel}"/>
+                        <TextBlock x:Name="TodayText" Style="{StaticResource DashValue}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource DashTile}">
+                    <StackPanel>
+                        <TextBlock Text="{l:T 'Inside now'}" Style="{StaticResource DashLabel}"/>
+                        <TextBlock x:Name="InsideText" Style="{StaticResource DashValue}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource DashTileAmber}">
+                    <StackPanel>
+                        <TextBlock Text="{l:T 'CPR cards held'}" Style="{StaticResource DashLabel}"/>
+                        <TextBlock x:Name="HeldText" Style="{StaticResource DashValue}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource DashTile}">
+                    <StackPanel>
+                        <TextBlock Text="{l:T 'Visits, 30 days'}" Style="{StaticResource DashLabel}"/>
+                        <TextBlock x:Name="MonthText" Style="{StaticResource DashValue}"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- One bar per day, today in accent. Kept left-to-right in Arabic, like the old chart. -->
+            <Border Style="{StaticResource Card}" Padding="18" Margin="0,0,0,16">
                 <StackPanel>
-                    <TextBlock Text="{l:T 'Visits today'}"/>
-                    <TextBlock x:Name="TodayText" FontSize="36" FontWeight="Bold"/>
+                    <TextBlock Text="{l:T 'Visits per day (last 30 days)'}" Style="{StaticResource SectionTitle}" Margin="0,0,0,12"/>
+                    <Grid FlowDirection="LeftToRight">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="200"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border BorderBrush="{StaticResource CardBorderBrush}" BorderThickness="0,0,0,1">
+                            <ItemsControl x:Name="Bars">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Height="{Binding Height}" Background="{Binding Fill}" CornerRadius="4,4,0,0"
+                                                Margin="3,0" VerticalAlignment="Bottom" ToolTip="{Binding Tip}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Border>
+                        <Grid Grid.Row="1" Margin="0,8,0,0" TextElement.FontSize="12" TextElement.Foreground="{StaticResource MutedTextBrush}">
+                            <TextBlock x:Name="FirstDay" HorizontalAlignment="Left"/>
+                            <TextBlock x:Name="MidDay" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{l:T 'Today'}" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </Grid>
                 </StackPanel>
             </Border>
-            <Border Style="{StaticResource Tile}">
-                <StackPanel>
-                    <TextBlock Text="{l:T 'Inside now'}"/>
-                    <TextBlock x:Name="InsideText" FontSize="36" FontWeight="Bold"/>
-                </StackPanel>
-            </Border>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Style="{StaticResource Card}" Padding="18,18,18,8">
+                    <StackPanel>
+                        <TextBlock Text="{l:T 'Top locations'}" Style="{StaticResource SectionTitle}" Margin="0,0,0,12"/>
+                        <ItemsControl x:Name="TopLocations" ItemTemplate="{StaticResource TopRow}" Tag="{StaticResource AccentBrush}"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Card}" Padding="18,18,18,8">
+                    <StackPanel>
+                        <TextBlock Text="{l:T 'Top companies'}" Style="{StaticResource SectionTitle}" Margin="0,0,0,12"/>
+                        <ItemsControl x:Name="TopCompanies" ItemTemplate="{StaticResource TopRow}" Tag="{StaticResource DarkBrush}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </StackPanel>
-        <DockPanel Grid.Row="1" Margin="0,12">
-            <TextBlock DockPanel.Dock="Top" Text="{l:T 'Visits per day (last 30 days)'}" FontWeight="Bold"/>
-            <lvc:CartesianChart x:Name="Chart" FlowDirection="LeftToRight" MinHeight="250"/>
-        </DockPanel>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="24"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <StackPanel>
-                <TextBlock Text="{l:T 'Top locations'}" FontWeight="Bold" Margin="0,0,0,4"/>
-                <ItemsControl x:Name="TopLocations" ItemTemplate="{StaticResource NameCountRow}"/>
-            </StackPanel>
-            <StackPanel Grid.Column="2">
-                <TextBlock Text="{l:T 'Top companies'}" FontWeight="Bold" Margin="0,0,0,4"/>
-                <ItemsControl x:Name="TopCompanies" ItemTemplate="{StaticResource NameCountRow}"/>
-            </StackPanel>
-        </Grid>
-    </Grid>
+    </ScrollViewer>
 </UserControl>
