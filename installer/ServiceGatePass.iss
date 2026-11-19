@@ -15,6 +15,7 @@ PrivilegesRequired=admin
 Compression=lzma2
 SolidCompression=yes
 UninstallDisplayIcon={app}\ServiceGatePass.exe
+SetupIconFile=..\src\ServiceGatePass\Resources\app.ico
 
 [Dirs]
 ; Every Windows user on the gate PC must be able to write the database, backups-before-upgrade and logs.
