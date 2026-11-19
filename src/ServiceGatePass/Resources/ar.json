@@ -5,5 +5,13 @@
   "That username is already taken.": "اسم المستخدم هذا مستخدم بالفعل.",
   "Password must be at least {0} characters.": "يجب ألا تقل كلمة المرور عن {0} أحرف.",
   "At least one active admin is required.": "يجب وجود مسؤول نشط واحد على الأقل.",
-  "User not found.": "المستخدم غير موجود."
+  "User not found.": "المستخدم غير موجود.",
+  "CPR must be 9 digits.": "يجب أن يتكون الرقم الشخصي من 9 أرقام.",
+  "Name is required.": "الاسم مطلوب.",
+  "Pick a location.": "اختر الموقع.",
+  "Already inside at {0} since {1}.": "موجود بالداخل في {0} منذ {1}.",
+  "Badge {0} is already in use.": "الشارة {0} مستخدمة بالفعل.",
+  "Slot {0} is already in use.": "الخانة {0} مستخدمة بالفعل.",
+  "Visit not found.": "الزيارة غير موجودة.",
+  "Already checked out.": "تم تسجيل الخروج مسبقًا."
 }
