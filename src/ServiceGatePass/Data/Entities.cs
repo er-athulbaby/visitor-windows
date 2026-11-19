@@ -52,6 +52,8 @@ public class User
     public string PasswordHash { get; set; } = "";
     public Role Role { get; set; }
     public bool IsActive { get; set; } = true;
+    public string RoleText => Role == Role.Admin ? L.T("Admin") : L.T("Gate staff");
+    public string ActiveText => IsActive ? L.T("Yes") : L.T("No");
 }
 
 public class Setting

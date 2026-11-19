@@ -100,5 +100,20 @@
   "Settings saved.": "تم حفظ الإعدادات.",
   "Select a location first.": "اختر موقعًا أولًا.",
   "Location name is required.": "اسم الموقع مطلوب.",
-  "Settings": "الإعدادات"
+  "Settings": "الإعدادات",
+  "Admin": "مسؤول",
+  "Gate staff": "موظف البوابة",
+  "Yes": "نعم",
+  "No": "لا",
+  "Role": "الدور",
+  "Active": "نشط",
+  "Add user": "إضافة مستخدم",
+  "For the selected user:": "للمستخدم المحدد:",
+  "Reset password": "إعادة تعيين كلمة المرور",
+  "Enable / disable": "تفعيل / تعطيل",
+  "Make admin": "تعيين كمسؤول",
+  "Make gate staff": "تعيين كموظف بوابة",
+  "Done.": "تم.",
+  "Select a user first.": "اختر مستخدمًا أولًا.",
+  "Users": "المستخدمون"
 }
