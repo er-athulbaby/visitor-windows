@@ -59,5 +59,18 @@
   "{0} checked in.": "تم تسجيل دخول {0}.",
   "{0} checked out. Return CPR card from slot {1}.": "تم تسجيل خروج {0}. أعد البطاقة الشخصية من الخانة {1}.",
   "{0} checked out. Return the CPR card.": "تم تسجيل خروج {0}. أعد البطاقة الشخصية.",
-  "Select a person in the list first.": "اختر شخصًا من القائمة أولًا."
+  "Select a person in the list first.": "اختر شخصًا من القائمة أولًا.",
+  "From": "من",
+  "To": "إلى",
+  "All locations": "كل المواقع",
+  "Show": "عرض",
+  "Export CSV": "تصدير CSV",
+  "Print": "طباعة",
+  "{0} visits": "{0} زيارة",
+  "Out": "الخروج",
+  "Checked in by": "سجل الدخول بواسطة",
+  "Checked out by": "سجل الخروج بواسطة",
+  "Gate history": "سجل البوابة",
+  "Inside": "بالداخل",
+  "History": "السجل"
 }

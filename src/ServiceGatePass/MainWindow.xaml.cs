@@ -19,6 +19,10 @@ public partial class MainWindow : Window
         RefreshHeader();
 
         Tabs.Items.Add(new TabItem { Header = L.T("Gate"), Content = new GateView() });
+        if (App.CurrentUser.Role == Role.Admin)
+        {
+            Tabs.Items.Add(new TabItem { Header = L.T("History"), Content = new HistoryView() });
+        }
         Tabs.SelectedIndex = Math.Min(selectedTab, Tabs.Items.Count - 1);
 
         App.BackupStatusChanged += ShowBackupStatus;
