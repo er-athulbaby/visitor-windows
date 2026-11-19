@@ -1,3 +1,9 @@
 {
-  "Check in": "تسجيل الدخول"
+  "Check in": "تسجيل الدخول",
+  "Username is required.": "اسم المستخدم مطلوب.",
+  "Display name is required.": "الاسم المعروض مطلوب.",
+  "That username is already taken.": "اسم المستخدم هذا مستخدم بالفعل.",
+  "Password must be at least {0} characters.": "يجب ألا تقل كلمة المرور عن {0} أحرف.",
+  "At least one active admin is required.": "يجب وجود مسؤول نشط واحد على الأقل.",
+  "User not found.": "المستخدم غير موجود."
 }
