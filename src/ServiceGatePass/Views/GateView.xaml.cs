@@ -1,5 +1,7 @@
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -8,6 +10,33 @@ using ServiceGatePass.Services;
 namespace ServiceGatePass.Views;
 
 public record LocationItem(int Id, string Display);
+
+/// Picks one of four soft avatar colours from the initials, so a name always gets the same one.
+/// ConverterParameter "fg" returns the text colour, anything else the background.
+public class AvatarBrushConverter : IValueConverter
+{
+    static readonly (Brush Bg, Brush Fg)[] Palette =
+    [
+        (Hex("#CFE9EA"), Hex("#0A4F54")), (Hex("#E7ECF6"), Hex("#23406E")),
+        (Hex("#F3E8F5"), Hex("#6B2E78")), (Hex("#FFF1DD"), Hex("#7A4B00")),
+    ];
+
+    static Brush Hex(string c)
+    {
+        var b = (Brush)new BrushConverter().ConvertFromString(c)!;
+        b.Freeze();
+        return b;
+    }
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        var pair = Palette[(value as string ?? "").Sum(ch => ch) % Palette.Length];
+        return parameter as string == "fg" ? pair.Fg : pair.Bg;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+        throw new NotSupportedException();
+}
 
 public partial class GateView : UserControl
 {
@@ -51,7 +80,10 @@ public partial class GateView : UserControl
     {
         using var db = App.OpenDb();
         inside = new GateService(db).Inside();
-        Counter.Text = string.Format(L.T("{0} inside · {0} cards held"), inside.Count);
+        InsideCount.Text = CardsHeldCount.Text = inside.Count.ToString();
+        VisitsTodayCount.Text = db.Visits.Count(v => v.CheckInAt >= DateTime.Today).ToString();
+        DateLine.Text = DateTime.Now.ToString("dddd d MMMM · HH:mm",
+            L.IsArabic ? CultureInfo.GetCultureInfo("ar-BH") : CultureInfo.GetCultureInfo("en-GB"));
         ApplySearch();
     }
 
@@ -82,6 +114,7 @@ public partial class GateView : UserControl
         Cpr.Text = NameEn.Text = Company.Text = Note.Text = Badge.Text = NameArText.Text = ReaderMessage.Text = "";
         nameAr = employer = null;
         Photo.Source = null;
+        ReturningChip.Visibility = Visibility.Collapsed;
         Locations.SelectedIndex = -1;
         RefreshSlots(keepSelection: false);
     }
@@ -123,6 +156,8 @@ public partial class GateView : UserControl
             Company.Text = employer ?? "";
             return;
         }
+        ReturningText.Text = string.Format(L.T("Returning visitor · {0} visits"), db.Visits.Count(v => v.VisitorId == visitor.Id));
+        ReturningChip.Visibility = Visibility.Visible;
         if (!fromCard)
         {
             NameEn.Text = visitor.NameEn;
@@ -141,6 +176,7 @@ public partial class GateView : UserControl
         nameAr = employer = null;
         NameArText.Text = "";
         Photo.Source = null;
+        ReturningChip.Visibility = Visibility.Collapsed;
     }
 
     void Cpr_LostFocus(object sender, RoutedEventArgs e)
@@ -250,6 +286,7 @@ public partial class GateView : UserControl
     static void Show(TextBlock target, string message, bool error)
     {
         target.Text = message;
-        target.Foreground = error ? Brushes.DarkRed : Brushes.DarkGreen;
+        target.Tag = error ? "error" : "ok";
+        target.Foreground = (Brush)target.FindResource(error ? "ErrorBrush" : "SuccessBrush");
     }
 }
