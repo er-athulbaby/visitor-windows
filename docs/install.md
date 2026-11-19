@@ -20,8 +20,15 @@
 ## Where data lives
 - Database: `C:\ProgramData\ServiceGatePass\gate.db`
 - Error logs: `C:\ProgramData\ServiceGatePass\logs\`
+- Before an upgrade the app saves `gate-before-upgrade-*.db` in the same folder. These are not deleted
+  automatically and can also be used for a restore.
 - Uninstalling the app does **not** delete the database.
+- Every Windows account on the gate PC can read the database, which holds CPR numbers, so the PC
+  should have only trusted accounts.
 
 ## If the PC fails
-Use the paper book. On the replacement PC, install the app, close it, copy the newest
-`gate-YYYY-MM-DD.db` from the backup folder to `C:\ProgramData\ServiceGatePass\gate.db`, then start the app.
+Use the paper book. On the replacement PC:
+1. Install the app, start it once, then close it.
+2. In `C:\ProgramData\ServiceGatePass`, delete `gate.db`, `gate.db-wal` and `gate.db-shm`.
+3. Copy the newest `gate-YYYY-MM-DD.db` from the backup folder into that folder and rename it to `gate.db`.
+4. Start the app and check that recent visits appear in **History**.
