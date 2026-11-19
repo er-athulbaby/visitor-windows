@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6E74}a:hover{color:#0A5257}
+</style>
+</helmet>
+<div style="min-height: 768px; display: flex; flex-wrap: wrap; background: #F4F6F8; font-family: Inter, system-ui, sans-serif; color: #111827">
+  <nav aria-label="Main" style="flex: 0 0 220px; background: #0F2A3D; color: #C9D7E3; display: flex; flex-direction: column; padding: 20px 14px; gap: 6px; box-sizing: border-box">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 20px">
+      <div style="width: 36px; height: 36px; border-radius: 10px; background: {{accent}}"></div>
+      <div><div style="color: #FFFFFF; font-weight: 600; font-size: 15px">Gulf Hotel</div><div style="font-size: 12px; color: #8FA6B8">Service gate</div></div>
+    </div>
+    <a href="Main.dc.html" style="padding: 11px 12px; border-radius: 10px; color: #C9D7E3; text-decoration: none; font-size: 14px">Gate</a>
+    <a href="History.dc.html" style="padding: 11px 12px; border-radius: 10px; color: #C9D7E3; text-decoration: none; font-size: 14px">History</a>
+    <a href="Dashboard.dc.html" style="padding: 11px 12px; border-radius: 10px; background: #1B4058; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 500">Dashboard</a>
+    <a href="Settings.dc.html" style="padding: 11px 12px; border-radius: 10px; color: #C9D7E3; text-decoration: none; font-size: 14px">Settings</a>
+    <a href="Settings.dc.html" style="padding: 11px 12px; border-radius: 10px; color: #C9D7E3; text-decoration: none; font-size: 14px">Users</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+    <h1 style="margin: 0; font-size: 24px; font-weight: 700">Dashboard</h1>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px">
+      <div style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 16px"><div style="font-size: 13px; color: #5B6B7A">Visits today</div><div style="font-size: 32px; font-weight: 700; color: #0F2A3D">37</div><div style="font-size: 12px; color: #1C6B3F">+6 vs yesterday</div></div>
+      <div style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 16px"><div style="font-size: 13px; color: #5B6B7A">Inside now</div><div style="font-size: 32px; font-weight: 700; color: #0F2A3D">14</div><div style="font-size: 12px; color: #5B6B7A">longest 2h 30m</div></div>
+      <div style="background: #FFF6E5; border: 1px solid #F5D9A8; border-radius: 16px; padding: 16px"><div style="font-size: 13px; color: #7A4B00">CPR cards held</div><div style="font-size: 32px; font-weight: 700; color: #7A4B00">14</div><div style="font-size: 12px; color: #7A4B00">slots free: 36 of 50</div></div>
+      <div style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 16px"><div style="font-size: 13px; color: #5B6B7A">Visits, 30 days</div><div style="font-size: 32px; font-weight: 700; color: #0F2A3D">812</div><div style="font-size: 12px; color: #5B6B7A">27 per day</div></div>
+    </div>
+    <section aria-labelledby="perday" style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+      <h2 id="perday" style="margin: 0; font-size: 15px; font-weight: 600">Visits per day, last 30 days</h2>
+      <div role="img" aria-label="Bar chart of visits per day over the last 30 days" style="height: 200px; display: flex; align-items: flex-end; gap: 6px; border-bottom: 1px solid #E3E8EE">
+        <sc-for list="{{bars}}" as="b" hint-placeholder-count="30">
+          <div style="flex: 1; border-radius: 4px 4px 0 0; background: {{b.color}}; height: {{b.h}}"></div>
+        </sc-for>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 12px; color: #7B8A98"><span>21/10</span><span>04/11</span><span>Today</span></div>
+    </section>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <section aria-labelledby="tl" style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 18px">
+        <h2 id="tl" style="margin: 0 0 12px; font-size: 15px; font-weight: 600">Top locations</h2>
+        <sc-for list="{{locs}}" as="r" hint-placeholder-count="4">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px">
+            <span style="width: 110px">{{r.name}}</span>
+            <span style="flex: 1; height: 8px; border-radius: 4px; background: #EEF1F4; display: block"><span style="display: block; height: 8px; border-radius: 4px; background: {{accent}}; width: {{r.w}}"></span></span>
+            <span style="width: 36px; text-align: right; font-weight: 600">{{r.n}}</span>
+          </div>
+        </sc-for>
+      </section>
+      <section aria-labelledby="tc" style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 18px">
+        <h2 id="tc" style="margin: 0 0 12px; font-size: 15px; font-weight: 600">Top companies</h2>
+        <sc-for list="{{cos}}" as="r" hint-placeholder-count="4">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px">
+            <span style="width: 150px">{{r.name}}</span>
+            <span style="flex: 1; height: 8px; border-radius: 4px; background: #EEF1F4; display: block"><span style="display: block; height: 8px; border-radius: 4px; background: #0F2A3D; width: {{r.w}}"></span></span>
+            <span style="width: 36px; text-align: right; font-weight: 600">{{r.n}}</span>
+          </div>
+        </sc-for>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E7C82","options":["#0E7C82","#1F5FBF","#B45309","#0F2A3D"]},"$preview":{"width":1366,"height":768}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#0E7C82';
+    const v = [22,25,19,28,31,24,12,26,29,27,33,30,21,14,27,31,28,35,26,24,15,29,32,30,34,28,25,16,31,37];
+    const max = 40;
+    const bars = v.map((n, i) => ({ h: Math.round(n / max * 100) + '%', color: i === v.length - 1 ? accent : '#B9D6D8' }));
+    const row = (name, n, top) => ({ name, n, w: Math.round(n / top * 100) + '%' });
+    return {
+      accent,
+      bars,
+      locs: [row('Kitchen', 214, 214), row('Loading bay', 188, 214), row('Ballroom', 121, 214), row('Engineering', 96, 214)],
+      cos: [row('Fresh Foods B.S.C.', 74, 74), row('Cool Air Co. W.L.L.', 51, 74), row('Delmon Bakery', 43, 74), row('Gulf Elevators', 22, 74)]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6E74}a:hover{color:#0A5257}
+</style>
+</helmet>
+<div style="min-height: 768px; display: flex; flex-wrap: wrap; font-family: Inter, system-ui, sans-serif; color: #111827; background: #F4F6F8">
+  <div style="flex: 1 1 480px; background: #0F2A3D; color: #C9D7E3; padding: 56px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; gap: 32px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="width: 44px; height: 44px; border-radius: 12px; background: {{accent}}; display: flex; align-items: center; justify-content: center">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+      </div>
+      <span style="color: #FFFFFF; font-weight: 600; font-size: 17px">Service Gate Pass</span>
+    </div>
+    <div>
+      <div style="font-size: 13px; letter-spacing: 0.08em; color: #8FA6B8; margin-bottom: 12px">GULF HOTEL · SERVICE ENTRANCE</div>
+      <h1 style="margin: 0; color: #FFFFFF; font-size: 40px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; max-width: 420px">Know whose card you're holding, every minute.</h1>
+    </div>
+    <div style="display: flex; gap: 28px; font-size: 13px">
+      <div><div style="color: #FFFFFF; font-size: 22px; font-weight: 700">14</div>inside now</div>
+      <div><div style="color: #FFFFFF; font-size: 22px; font-weight: 700">37</div>visits today</div>
+    </div>
+  </div>
+  <div style="flex: 1 1 420px; display: flex; align-items: center; justify-content: center; padding: 40px; box-sizing: border-box">
+    <form style="width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 16px">
+      <div>
+        <h2 style="margin: 0; font-size: 26px; font-weight: 700">Sign in</h2>
+        <p style="margin: 6px 0 0; color: #5B6B7A; font-size: 14px">Use your gate staff account.</p>
+      </div>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #3B4A58">Username
+        <input value="mohammed.k" style="height: 46px; border: 1px solid #D5DCE3; border-radius: 12px; padding: 0 14px; font: 400 15px Inter, sans-serif; background: #FFFFFF"></label>
+      <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #3B4A58">Password
+        <input type="password" value="secret12" style="height: 46px; border: 1px solid #D5DCE3; border-radius: 12px; padding: 0 14px; font: 400 15px Inter, sans-serif; background: #FFFFFF"></label>
+      <button type="button" style="height: 50px; border: none; border-radius: 12px; background: {{accent}}; color: #FFFFFF; font: 600 16px Inter, sans-serif; cursor: pointer">Sign in</button>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #5B6B7A">
+        <span>Card reader connected</span>
+        <button type="button" style="border: 1px solid #D5DCE3; background: #FFFFFF; border-radius: 8px; padding: 6px 10px; font: 500 13px Inter, sans-serif; cursor: pointer">العربية</button>
+      </div>
+    </form>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E7C82","options":["#0E7C82","#1F5FBF","#B45309","#0F2A3D"]},"$preview":{"width":1366,"height":768}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#0E7C82' };
+  }
+}
+</script>
+</body>
+</html>

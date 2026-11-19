@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0E6E74}a:hover{color:#0A5257}
+</style>
+</helmet>
+<div style="min-height: 768px; display: flex; flex-wrap: wrap; background: #F4F6F8; font-family: Inter, system-ui, sans-serif; color: #111827">
+  <nav aria-label="Main" style="flex: 0 0 220px; background: #0F2A3D; color: #C9D7E3; display: flex; flex-direction: column; padding: 20px 14px; gap: 6px; box-sizing: border-box">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 20px">
+      <div style="width: 36px; height: 36px; border-radius: 10px; background: {{accent}}"></div>
+      <div><div style="color: #FFFFFF; font-weight: 600; font-size: 15px">Gulf Hotel</div><div style="font-size: 12px; color: #8FA6B8">Service gate</div></div>
+    </div>
+    <a href="Main.dc.html" style="padding: 11px 12px; border-radius: 10px; color: #C9D7E3; text-decoration: none; font-size: 14px">Gate</a>
+    <a href="History.dc.html" style="padding: 11px 12px; border-radius: 10px; color: #C9D7E3; text-decoration: none; font-size: 14px">History</a>
+    <a href="Dashboard.dc.html" style="padding: 11px 12px; border-radius: 10px; color: #C9D7E3; text-decoration: none; font-size: 14px">Dashboard</a>
+    <a href="Settings.dc.html" style="padding: 11px 12px; border-radius: 10px; background: #1B4058; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 500">Settings</a>
+    <a href="Settings.dc.html" style="padding: 11px 12px; border-radius: 10px; color: #C9D7E3; text-decoration: none; font-size: 14px">Users</a>
+  </nav>
+  <main style="flex: 999 1 560px; min-width: 0; padding: 24px 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+    <header style="display: flex; align-items: center; gap: 12px">
+      <h1 style="margin: 0; font-size: 24px; font-weight: 700; flex: 1">Settings</h1>
+      <span style="font-size: 13px; color: #1C6B3F">Settings saved</span>
+      <button type="button" style="height: 40px; padding: 0 20px; border-radius: 10px; border: none; background: {{accent}}; color: #FFFFFF; font: 600 14px Inter, sans-serif; cursor: pointer">Save</button>
+    </header>
+    <div style="display: flex; flex-wrap: wrap; gap: 16px">
+      <div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 16px">
+        <section aria-labelledby="h1s" style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+          <h2 id="h1s" style="margin: 0; font-size: 15px; font-weight: 600">Hotel</h2>
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; font-weight: 500; color: #5B6B7A">Hotel name<input value="Gulf Hotel" style="height: 40px; border: 1px solid #D5DCE3; border-radius: 10px; padding: 0 12px; font: 400 14px Inter, sans-serif"></label>
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div style="width: 56px; height: 56px; border-radius: 12px; background: #EEF1F4; border: 1px dashed #B8C3CE"></div>
+            <button type="button" style="height: 38px; padding: 0 14px; border-radius: 10px; border: 1px solid #D5DCE3; background: #FFFFFF; font: 500 13px Inter, sans-serif; cursor: pointer">Choose logo</button>
+          </div>
+        </section>
+        <section aria-labelledby="h2s" style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+          <h2 id="h2s" style="margin: 0; font-size: 15px; font-weight: 600">At the gate</h2>
+          <label style="display: flex; align-items: center; gap: 12px; font-size: 14px"><input type="checkbox" style="width: 18px; height: 18px; accent-color: {{accent}}">Use badge numbers</label>
+          <label style="display: flex; align-items: center; gap: 12px; font-size: 14px"><input type="checkbox" checked style="width: 18px; height: 18px; accent-color: {{accent}}">Use card slot numbers</label>
+          <label style="display: flex; align-items: center; gap: 12px; font-size: 13px; color: #5B6B7A">Number of slots<input value="50" style="height: 36px; width: 80px; border: 1px solid #D5DCE3; border-radius: 10px; padding: 0 10px; font: 600 14px Inter, sans-serif"></label>
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 12px; font-weight: 500; color: #5B6B7A">Card reader URL<input value="http://localhost:5050/api/operation/ReadCard" style="height: 40px; border: 1px solid #D5DCE3; border-radius: 10px; padding: 0 12px; font: 400 13px Inter, sans-serif"></label>
+        </section>
+        <section aria-labelledby="h3s" style="background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+          <h2 id="h3s" style="margin: 0; font-size: 15px; font-weight: 600">Backups</h2>
+          <div style="display: flex; gap: 8px"><input aria-label="Backup folder" value="E:\GateBackups" style="flex: 1; height: 40px; border: 1px solid #D5DCE3; border-radius: 10px; padding: 0 12px; font: 400 14px Inter, sans-serif"><button type="button" style="height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid #D5DCE3; background: #FFFFFF; font: 500 13px Inter, sans-serif; cursor: pointer">Choose</button></div>
+          <div style="font-size: 13px; color: #1C6B3F">Last backup today 07:00 · 30 kept</div>
+        </section>
+      </div>
+      <section aria-labelledby="h4s" style="flex: 1 1 380px; background: #FFFFFF; border: 1px solid #E3E8EE; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px">
+        <h2 id="h4s" style="margin: 0; font-size: 15px; font-weight: 600">Locations</h2>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; background: #ECF7F7; border: 1px solid #9CCFD1; font-size: 14px"><span style="flex: 1; font-weight: 600">Kitchen</span><span dir="rtl" style="color: #5B6B7A">المطبخ</span></div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid #EEF1F4; font-size: 14px"><span style="flex: 1">Ballroom</span><span dir="rtl" style="color: #5B6B7A">القاعة</span></div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid #EEF1F4; font-size: 14px"><span style="flex: 1">Loading bay</span><span dir="rtl" style="color: #5B6B7A">منطقة التحميل</span></div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid #EEF1F4; font-size: 14px; color: #7B8A98"><span style="flex: 1">Pool deck</span><span style="background: #F1F3F5; border-radius: 999px; padding: 2px 8px; font-size: 12px">Hidden</span></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 4px">
+          <input aria-label="Name in English" value="Kitchen" style="height: 40px; border: 1px solid #D5DCE3; border-radius: 10px; padding: 0 12px; font: 400 14px Inter, sans-serif">
+          <input aria-label="Name in Arabic" dir="rtl" value="المطبخ" style="height: 40px; border: 1px solid #D5DCE3; border-radius: 10px; padding: 0 12px; font: 400 14px Inter, sans-serif">
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <button type="button" style="height: 36px; padding: 0 14px; border-radius: 10px; border: none; background: #0F2A3D; color: #FFFFFF; font: 600 13px Inter, sans-serif; cursor: pointer">Add</button>
+          <button type="button" style="height: 36px; padding: 0 14px; border-radius: 10px; border: 1px solid #D5DCE3; background: #FFFFFF; font: 500 13px Inter, sans-serif; cursor: pointer">Rename</button>
+          <button type="button" aria-label="Move up" style="height: 36px; width: 40px; border-radius: 10px; border: 1px solid #D5DCE3; background: #FFFFFF; font: 500 13px Inter, sans-serif; cursor: pointer">↑</button>
+          <button type="button" aria-label="Move down" style="height: 36px; width: 40px; border-radius: 10px; border: 1px solid #D5DCE3; background: #FFFFFF; font: 500 13px Inter, sans-serif; cursor: pointer">↓</button>
+          <button type="button" style="height: 36px; padding: 0 14px; border-radius: 10px; border: 1px solid #D5DCE3; background: #FFFFFF; font: 500 13px Inter, sans-serif; cursor: pointer">Hide / show</button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#0E7C82","options":["#0E7C82","#1F5FBF","#B45309","#0F2A3D"]},"$preview":{"width":1366,"height":768}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#0E7C82' };
+  }
+}
+</script>
+</body>
+</html>
