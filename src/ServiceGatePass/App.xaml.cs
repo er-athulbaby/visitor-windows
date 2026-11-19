@@ -35,6 +35,8 @@ public partial class App : Application
             MessageBox.Show(L.T("Something went wrong. Details were saved to the log.") + "\n\n" + a.Exception.Message,
                 "Service Gate Pass", MessageBoxButton.OK, MessageBoxImage.Error);
             a.Handled = true;
+            // OnExplicitShutdown: if the error left no window open, exit rather than run invisibly.
+            if (!Windows.OfType<Window>().Any(w => w.IsVisible)) Shutdown(1);
         };
 
         try
