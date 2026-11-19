@@ -129,15 +129,36 @@
                                     <StackPanel>
                                         <TextBlock Text="{l:T 'CPR'}" Style="{StaticResource FieldLabel}"/>
                                         <TextBox x:Name="Cpr" MaxLength="9" FontSize="15" FontWeight="SemiBold"
-                                                 LostFocus="Cpr_LostFocus" TextChanged="Cpr_TextChanged"/>
+                                                 LostFocus="Cpr_LostFocus" TextChanged="Cpr_TextChanged" PreviewKeyDown="Cpr_PreviewKeyDown"/>
+                                        <Popup x:Name="CprSuggest" PlacementTarget="{Binding ElementName=Cpr}" Placement="Bottom" AllowsTransparency="True"
+                                               MinWidth="{Binding ActualWidth, ElementName=Cpr}">
+                                            <Border Background="{StaticResource CardBrush}" BorderBrush="{StaticResource CardBorderBrush}" BorderThickness="1"
+                                                    CornerRadius="10" Padding="4" Margin="0,4,0,0">
+                                                <ListBox x:Name="SuggestList" BorderThickness="0" Background="Transparent" MinWidth="260"
+                                                         PreviewMouseLeftButtonUp="SuggestList_Click">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Margin="4,3">
+                                                                <TextBlock Text="{Binding NameEn}" FontWeight="SemiBold" Foreground="{StaticResource InkBrush}"/>
+                                                                <TextBlock Text="{Binding Cpr}" FontSize="12" Foreground="{StaticResource MutedTextBrush}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </Border>
+                                        </Popup>
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="{l:T 'Company'}" Style="{StaticResource FieldLabel}"/>
                                         <TextBox x:Name="Company"/>
                                     </StackPanel>
-                                    <StackPanel Grid.Row="2" Grid.ColumnSpan="3">
+                                    <StackPanel Grid.Row="2">
                                         <TextBlock Text="{l:T 'Name'}" Style="{StaticResource FieldLabel}"/>
                                         <TextBox x:Name="NameEn" FontSize="15" FontWeight="Medium"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="2">
+                                        <TextBlock Text="{l:T 'Mobile (optional)'}" Style="{StaticResource FieldLabel}"/>
+                                        <TextBox x:Name="Mobile" MaxLength="20" Style="{StaticResource LatinTextBox}"/>
                                     </StackPanel>
                                     <DockPanel Grid.Row="3" Grid.ColumnSpan="3" Margin="0,6,0,0" MinHeight="22">
                                         <Border x:Name="ReturningChip" DockPanel.Dock="Right" Style="{StaticResource Pill}" Visibility="Collapsed" Margin="8,0,0,0">

@@ -4,7 +4,7 @@ using ServiceGatePass.Data;
 namespace ServiceGatePass.Services;
 
 public record CheckInRequest(string Cpr, string NameEn, string? NameAr, string? Employer, int LocationId,
-    string? Company, string? Note, int? BadgeNo, int? SlotNo, int UserId);
+    string? Company, string? Note, int? BadgeNo, int? SlotNo, int UserId, string? Mobile = null);
 
 public record InsideRow(int VisitId, string Name, string Cpr, string Location, DateTime CheckInAt, int? BadgeNo, int? SlotNo,
     string? Company)
@@ -33,6 +33,14 @@ public class GateService(GateDb db, Func<DateTime>? clock = null)
     {
         var c = cpr.Trim();
         return db.Visitors.SingleOrDefault(v => v.Cpr == c);
+    }
+
+    /// Earlier visitors whose CPR starts with what has been typed so far, most recent first.
+    public List<Visitor> SuggestVisitors(string cprStart, int max = 6)
+    {
+        var p = cprStart.Trim();
+        if (p.Length < 3) return [];
+        return db.Visitors.Where(v => v.Cpr.StartsWith(p)).OrderByDescending(v => v.UpdatedAt).Take(max).ToList();
     }
 
     public Visit CheckIn(CheckInRequest r)
@@ -64,6 +72,7 @@ public class GateService(GateDb db, Func<DateTime>? clock = null)
         visitor.NameEn = r.NameEn.Trim();
         visitor.NameAr = Str.OrNull(r.NameAr) ?? visitor.NameAr;
         visitor.Employer = Str.OrNull(r.Employer) ?? visitor.Employer;
+        visitor.Mobile = Str.OrNull(r.Mobile) ?? visitor.Mobile;
         visitor.LastCompany = Str.OrNull(r.Company);
         visitor.LastLocationId = location.Id;
         visitor.LastNote = Str.OrNull(r.Note);

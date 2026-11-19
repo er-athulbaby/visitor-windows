@@ -7,6 +7,7 @@ public class Visitor
     public string NameEn { get; set; } = "";
     public string? NameAr { get; set; }
     public string? Employer { get; set; }
+    public string? Mobile { get; set; }
     public string? LastCompany { get; set; }
     public int? LastLocationId { get; set; }
     public string? LastNote { get; set; }

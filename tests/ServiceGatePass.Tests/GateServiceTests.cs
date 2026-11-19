@@ -175,4 +175,36 @@ public class GateServiceTests
         Assert.Null(rows[1].Company);
         Assert.Equal("S", rows[1].Initials);
     }
+
+    [Fact]
+    public void Mobile_is_optional_and_kept_when_left_blank_later()
+    {
+        using var db = TestDb.Create();
+        var loc = TestDb.AddLocation(db, "Kitchen");
+        var gate = Gate(db);
+
+        var v1 = gate.CheckIn(Req("900000001", loc.Id) with { Mobile = " 33445566 " });
+        Assert.Equal("33445566", db.Visitors.Single().Mobile);
+        gate.CheckOut(v1.Id, 1);
+
+        gate.CheckIn(Req("900000001", loc.Id));
+        Assert.Equal("33445566", db.Visitors.Single().Mobile);
+
+        gate.CheckIn(Req("900000002", loc.Id));
+        Assert.Null(db.Visitors.Single(v => v.Cpr == "900000002").Mobile);
+    }
+
+    [Fact]
+    public void SuggestVisitors_matches_cpr_start_from_three_digits()
+    {
+        using var db = TestDb.Create();
+        var loc = TestDb.AddLocation(db, "Kitchen");
+        var gate = Gate(db);
+        gate.CheckIn(Req("960934359", loc.Id));
+        gate.CheckIn(Req("980445361", loc.Id));
+
+        Assert.Empty(gate.SuggestVisitors("96"));
+        Assert.Equal("960934359", Assert.Single(gate.SuggestVisitors("9609")).Cpr);
+        Assert.Empty(gate.SuggestVisitors("123"));
+    }
 }

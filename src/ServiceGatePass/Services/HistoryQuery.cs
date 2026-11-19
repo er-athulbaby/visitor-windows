@@ -6,7 +6,7 @@ namespace ServiceGatePass.Services;
 public record HistoryFilter(DateTime From, DateTime To, string? Search, int? LocationId, string? Company);
 
 public record HistoryRow(string Name, string Cpr, string Location, string? Company, string? Note, int? BadgeNo, int? SlotNo,
-    DateTime CheckInAt, DateTime? CheckOutAt, string CheckInBy, string? CheckOutBy);
+    DateTime CheckInAt, DateTime? CheckOutAt, string CheckInBy, string? CheckOutBy, string? Mobile = null);
 
 public static class HistoryQuery
 {
@@ -34,7 +34,7 @@ public static class HistoryQuery
         return q.OrderByDescending(v => v.CheckInAt).AsEnumerable()
             .Select(v => new HistoryRow(v.Visitor.NameEn, v.Visitor.Cpr, v.Location.Display, v.Company, v.Note, v.BadgeNo, v.SlotNo,
                 v.CheckInAt, v.CheckOutAt, users.GetValueOrDefault(v.CheckInByUserId, ""),
-                v.CheckOutByUserId is int outBy ? users.GetValueOrDefault(outBy, "") : null))
+                v.CheckOutByUserId is int outBy ? users.GetValueOrDefault(outBy, "") : null, v.Visitor.Mobile))
             .ToList();
     }
 }

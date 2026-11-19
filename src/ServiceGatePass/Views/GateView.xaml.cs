@@ -5,6 +5,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using ServiceGatePass.Data;
 using ServiceGatePass.Services;
 
 namespace ServiceGatePass.Views;
@@ -111,9 +112,10 @@ public partial class GateView : UserControl
 
     void ClearForm()
     {
-        Cpr.Text = NameEn.Text = Company.Text = Note.Text = Badge.Text = NameArText.Text = ReaderMessage.Text = "";
+        Cpr.Text = NameEn.Text = Mobile.Text = Company.Text = Note.Text = Badge.Text = NameArText.Text = ReaderMessage.Text = "";
         nameAr = employer = null;
         Photo.Source = null;
+        CprSuggest.IsOpen = false;
         ReturningChip.Visibility = Visibility.Collapsed;
         Locations.SelectedIndex = -1;
         RefreshSlots(keepSelection: false);
@@ -134,7 +136,7 @@ public partial class GateView : UserControl
                 return;
             }
             ReaderMessage.Text = "";
-            Cpr.Text = card.Cpr;
+            SetCprQuietly(card.Cpr);
             NameEn.Text = card.NameEn;
             nameAr = card.NameAr;
             NameArText.Text = nameAr ?? "";
@@ -166,6 +168,7 @@ public partial class GateView : UserControl
             employer = visitor.Employer;
         }
         Company.Text = visitor.LastCompany ?? employer ?? "";
+        Mobile.Text = visitor.Mobile ?? "";
         Note.Text = visitor.LastNote ?? "";
         if (visitor.LastLocationId is int id) Locations.SelectedValue = id;
     }
@@ -177,10 +180,67 @@ public partial class GateView : UserControl
         NameArText.Text = "";
         Photo.Source = null;
         ReturningChip.Visibility = Visibility.Collapsed;
+        if (!settingCpr) Suggest();
+    }
+
+    bool settingCpr; // true while code (card read, picking a suggestion) sets the CPR box
+
+    void SetCprQuietly(string cpr)
+    {
+        settingCpr = true;
+        try { Cpr.Text = cpr; } finally { settingCpr = false; }
+    }
+
+    /// From 3 typed digits, list earlier visitors whose CPR starts with them. A full 9-digit CPR
+    /// of a known visitor fills the form straight away.
+    void Suggest()
+    {
+        var text = Cpr.Text.Trim();
+        List<Visitor> matches;
+        using (var db = App.OpenDb()) matches = new GateService(db).SuggestVisitors(text);
+        if (text.Length == 9 && matches.Any(v => v.Cpr == text))
+        {
+            CprSuggest.IsOpen = false;
+            NameEn.Text = "";
+            Prefill(fromCard: false);
+            return;
+        }
+        SuggestList.ItemsSource = matches;
+        CprSuggest.IsOpen = matches.Count > 0 && Cpr.IsKeyboardFocused;
+    }
+
+    void Pick(Visitor? v)
+    {
+        CprSuggest.IsOpen = false;
+        if (v == null) return;
+        SetCprQuietly(v.Cpr);
+        NameEn.Text = "";
+        Prefill(fromCard: false);
+        Cpr.CaretIndex = Cpr.Text.Length;
+        Locations.Focus();
+    }
+
+    void SuggestList_Click(object sender, MouseButtonEventArgs e) => Pick(SuggestList.SelectedItem as Visitor);
+
+    /// Down/Up move through the suggestions, Enter picks one (instead of checking in), Esc closes the list.
+    void Cpr_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (!CprSuggest.IsOpen) return;
+        var n = SuggestList.Items.Count;
+        switch (e.Key)
+        {
+            case Key.Down: SuggestList.SelectedIndex = (SuggestList.SelectedIndex + 1) % n; break;
+            case Key.Up: SuggestList.SelectedIndex = SuggestList.SelectedIndex <= 0 ? n - 1 : SuggestList.SelectedIndex - 1; break;
+            case Key.Enter when SuggestList.SelectedItem is Visitor v: Pick(v); break;
+            case Key.Escape: CprSuggest.IsOpen = false; break;
+            default: return;
+        }
+        e.Handled = true;
     }
 
     void Cpr_LostFocus(object sender, RoutedEventArgs e)
     {
+        if (!SuggestList.IsMouseOver) CprSuggest.IsOpen = false;
         if (Cpr.Text.Trim().Length == 9 && NameEn.Text.Trim() == "") Prefill(fromCard: false);
     }
 
@@ -204,7 +264,7 @@ public partial class GateView : UserControl
             usedSlot = slotOn ? Slot.SelectedItem as int? : null;
             new GateService(db).CheckIn(new CheckInRequest(Cpr.Text, NameEn.Text, nameAr, employer,
                 Locations.SelectedValue as int? ?? 0, Company.Text, Note.Text, badge,
-                usedSlot, App.CurrentUser.Id));
+                usedSlot, App.CurrentUser.Id, Mobile.Text));
         }
         catch (GateException ex)
         {

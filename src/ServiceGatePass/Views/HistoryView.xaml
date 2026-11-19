@@ -55,6 +55,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="{l:T 'Visitor'}" Binding="{Binding Name}" MinWidth="160" ElementStyle="{StaticResource CellStrong}"/>
                         <DataGridTextColumn Header="{l:T 'CPR'}" Binding="{Binding Cpr}" ElementStyle="{StaticResource CellText}"/>
+                        <DataGridTextColumn Header="{l:T 'Mobile'}" Binding="{Binding Mobile}" ElementStyle="{StaticResource CellText}"/>
                         <DataGridTextColumn Header="{l:T 'Location'}" Binding="{Binding Location}" ElementStyle="{StaticResource CellText}"/>
                         <DataGridTextColumn Header="{l:T 'Company'}" Binding="{Binding Company}" MinWidth="140" MaxWidth="260" ElementStyle="{StaticResource CellText}"/>
                         <DataGridTextColumn Header="{l:T 'Note'}" Binding="{Binding Note}" MinWidth="120" MaxWidth="260" ElementStyle="{StaticResource CellMuted}"/>

@@ -169,6 +169,9 @@ namespace ServiceGatePass.Data.Migrations
                     b.Property<string>("LastNote")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Mobile")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("NameAr")
                         .HasColumnType("TEXT");
 
