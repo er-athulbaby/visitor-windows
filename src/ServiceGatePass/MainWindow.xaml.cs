@@ -15,6 +15,8 @@ public partial class MainWindow : Window
         InitializeComponent();
         FlowDirection = L.IsArabic ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         UserName.Text = App.CurrentUser.DisplayName;
+        UserRole.Text = App.CurrentUser.RoleText;
+        UserInitials.Text = InsideRow.InitialsOf(App.CurrentUser.DisplayName);
         LanguageButton.Content = L.IsArabic ? "English" : "العربية";
         RefreshHeader();
 
@@ -26,6 +28,8 @@ public partial class MainWindow : Window
             Tabs.Items.Add(new TabItem { Header = L.T("Settings"), Content = new SettingsView() });
             Tabs.Items.Add(new TabItem { Header = L.T("Users"), Content = new UsersView() });
         }
+        string[] icons = ["IconGate", "IconHistory", "IconDashboard", "IconSettings", "IconUsers"];
+        for (var i = 0; i < Tabs.Items.Count; i++) ((TabItem)Tabs.Items[i]).Tag = FindResource(icons[i]);
         Tabs.SelectedIndex = Math.Min(selectedTab, Tabs.Items.Count - 1);
 
         App.BackupStatusChanged += ShowBackupStatus;
@@ -43,6 +47,8 @@ public partial class MainWindow : Window
         var settings = new SettingsStore(db);
         HotelName.Text = settings.Get(SettingsStore.HotelName) ?? "";
         Logo.Source = App.LoadImage(settings.Get(SettingsStore.LogoPath));
+        LogoTile.Visibility = Logo.Source == null ? Visibility.Collapsed : Visibility.Visible;
+        BrandMark.Visibility = Logo.Source == null ? Visibility.Visible : Visibility.Collapsed;
         Title = $"Service Gate Pass — {HotelName.Text}";
     }
 

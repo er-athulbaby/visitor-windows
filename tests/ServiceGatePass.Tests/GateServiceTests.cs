@@ -159,4 +159,20 @@ public class GateServiceTests
         Assert.Equal(first.Id, rows[0].VisitId);
         Assert.Equal("Kitchen", rows[0].Location);
     }
+
+    [Fact]
+    public void Inside_rows_carry_company_and_initials()
+    {
+        using var db = TestDb.Create();
+        var loc = TestDb.AddLocation(db, "Kitchen");
+        Gate(db).CheckIn(Req("900000001", loc.Id, name: "ali  hasan Ahmed", company: "Cool Air Co."));
+        Gate(db).CheckIn(Req("900000002", loc.Id, name: "Sara"));
+
+        var rows = Gate(db).Inside();
+
+        Assert.Equal("Cool Air Co.", rows[0].Company);
+        Assert.Equal("AH", rows[0].Initials);
+        Assert.Null(rows[1].Company);
+        Assert.Equal("S", rows[1].Initials);
+    }
 }

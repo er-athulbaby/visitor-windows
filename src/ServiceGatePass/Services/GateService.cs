@@ -6,8 +6,15 @@ namespace ServiceGatePass.Services;
 public record CheckInRequest(string Cpr, string NameEn, string? NameAr, string? Employer, int LocationId,
     string? Company, string? Note, int? BadgeNo, int? SlotNo, int UserId);
 
-public record InsideRow(int VisitId, string Name, string Cpr, string Location, DateTime CheckInAt, int? BadgeNo, int? SlotNo)
+public record InsideRow(int VisitId, string Name, string Cpr, string Location, DateTime CheckInAt, int? BadgeNo, int? SlotNo,
+    string? Company)
 {
+    public string Initials => InitialsOf(Name);
+
+    /// First letters of the first two words, upper-case ("Ali hasan Ahmed" → "AH").
+    public static string InitialsOf(string name) =>
+        string.Concat(name.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(2).Select(w => char.ToUpperInvariant(w[0])));
+
     public string Duration
     {
         get
@@ -92,7 +99,7 @@ public class GateService(GateDb db, Func<DateTime>? clock = null)
             .Where(v => v.CheckOutAt == null)
             .OrderBy(v => v.CheckInAt)
             .AsEnumerable()
-            .Select(v => new InsideRow(v.Id, v.Visitor.NameEn, v.Visitor.Cpr, v.Location.Display, v.CheckInAt, v.BadgeNo, v.SlotNo))
+            .Select(v => new InsideRow(v.Id, v.Visitor.NameEn, v.Visitor.Cpr, v.Location.Display, v.CheckInAt, v.BadgeNo, v.SlotNo, v.Company))
             .ToList();
 
     public List<int> FreeSlots(int slotCount)
