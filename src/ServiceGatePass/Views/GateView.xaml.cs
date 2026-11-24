@@ -95,7 +95,8 @@ public partial class GateView : UserControl
         var rows = q == ""
             ? inside
             : inside.Where(r => r.Name.Contains(q, StringComparison.OrdinalIgnoreCase) || r.Cpr.Contains(q)
-                || r.BadgeNo?.ToString() == q || r.SlotNo?.ToString() == q).ToList();
+                || r.BadgeNo?.ToString() == q || r.SlotNo?.ToString() == q
+                || (r.VehicleNo?.Contains(q, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
         InsideGrid.ItemsSource = rows;
         InsideGrid.SelectedItem = rows.FirstOrDefault(r => r.VisitId == selectedId) ?? (rows.Count == 1 ? rows[0] : null);
     }
@@ -112,7 +113,7 @@ public partial class GateView : UserControl
 
     void ClearForm()
     {
-        Cpr.Text = NameEn.Text = Mobile.Text = Company.Text = Note.Text = Badge.Text = NameArText.Text = ReaderMessage.Text = "";
+        Cpr.Text = NameEn.Text = Mobile.Text = Vehicle.Text = Company.Text = Note.Text = Badge.Text = NameArText.Text = ReaderMessage.Text = "";
         nameAr = employer = null;
         Photo.Source = null;
         CprSuggest.IsOpen = false;
@@ -152,7 +153,8 @@ public partial class GateView : UserControl
     void Prefill(bool fromCard)
     {
         using var db = App.OpenDb();
-        var visitor = new GateService(db).FindVisitor(Cpr.Text);
+        var gate = new GateService(db);
+        var visitor = gate.FindVisitor(Cpr.Text);
         if (visitor == null)
         {
             Company.Text = employer ?? "";
@@ -169,6 +171,7 @@ public partial class GateView : UserControl
         }
         Company.Text = visitor.LastCompany ?? employer ?? "";
         Mobile.Text = visitor.Mobile ?? "";
+        Vehicle.Text = gate.LastVehicle(visitor.Id) ?? "";
         Note.Text = visitor.LastNote ?? "";
         if (visitor.LastLocationId is int id) Locations.SelectedValue = id;
     }
@@ -264,7 +267,7 @@ public partial class GateView : UserControl
             usedSlot = slotOn ? Slot.SelectedItem as int? : null;
             new GateService(db).CheckIn(new CheckInRequest(Cpr.Text, NameEn.Text, nameAr, employer,
                 Locations.SelectedValue as int? ?? 0, Company.Text, Note.Text, badge,
-                usedSlot, App.CurrentUser.Id, Mobile.Text));
+                usedSlot, App.CurrentUser.Id, Mobile.Text, Vehicle.Text));
         }
         catch (GateException ex)
         {

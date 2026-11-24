@@ -120,6 +120,9 @@ namespace ServiceGatePass.Data.Migrations
                     b.Property<int?>("SlotNo")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("VehicleNo")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("VisitorId")
                         .HasColumnType("INTEGER");
 

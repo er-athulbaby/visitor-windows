@@ -6,7 +6,7 @@ namespace ServiceGatePass.Services;
 public record HistoryFilter(DateTime From, DateTime To, string? Search, int? LocationId, string? Company);
 
 public record HistoryRow(string Name, string Cpr, string Location, string? Company, string? Note, int? BadgeNo, int? SlotNo,
-    DateTime CheckInAt, DateTime? CheckOutAt, string CheckInBy, string? CheckOutBy, string? Mobile = null);
+    DateTime CheckInAt, DateTime? CheckOutAt, string CheckInBy, string? CheckOutBy, string? Mobile = null, string? VehicleNo = null);
 
 public static class HistoryQuery
 {
@@ -21,7 +21,8 @@ public static class HistoryQuery
         {
             var like = $"%{s}%"; // SQLite LIKE is case-insensitive for ASCII
             q = q.Where(v => EF.Functions.Like(v.Visitor.NameEn, like) || v.Visitor.Cpr.Contains(s)
-                || (v.Visitor.NameAr != null && v.Visitor.NameAr.Contains(s)));
+                || (v.Visitor.NameAr != null && v.Visitor.NameAr.Contains(s))
+                || (v.VehicleNo != null && EF.Functions.Like(v.VehicleNo, like)));
         }
         if (f.LocationId is int locationId) q = q.Where(v => v.LocationId == locationId);
         if (Str.OrNull(f.Company) is string c)
@@ -34,7 +35,7 @@ public static class HistoryQuery
         return q.OrderByDescending(v => v.CheckInAt).AsEnumerable()
             .Select(v => new HistoryRow(v.Visitor.NameEn, v.Visitor.Cpr, v.Location.Display, v.Company, v.Note, v.BadgeNo, v.SlotNo,
                 v.CheckInAt, v.CheckOutAt, users.GetValueOrDefault(v.CheckInByUserId, ""),
-                v.CheckOutByUserId is int outBy ? users.GetValueOrDefault(outBy, "") : null, v.Visitor.Mobile))
+                v.CheckOutByUserId is int outBy ? users.GetValueOrDefault(outBy, "") : null, v.Visitor.Mobile, v.VehicleNo))
             .ToList();
     }
 }

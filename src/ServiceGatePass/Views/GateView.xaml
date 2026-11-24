@@ -186,16 +186,21 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
                                     <TextBlock Text="{l:T 'Note'}" Style="{StaticResource FieldLabel}"/>
                                     <TextBox x:Name="Note"/>
                                 </StackPanel>
-                                <StackPanel x:Name="BadgePanel" Grid.Column="1" Width="110" Margin="10,0,0,0">
+                                <StackPanel Grid.Column="1" Width="140" Margin="10,0,0,0">
+                                    <TextBlock Text="{l:T 'Vehicle no. (optional)'}" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox x:Name="Vehicle" MaxLength="15" CharacterCasing="Upper" Style="{StaticResource LatinTextBox}"/>
+                                </StackPanel>
+                                <StackPanel x:Name="BadgePanel" Grid.Column="2" Width="110" Margin="10,0,0,0">
                                     <TextBlock Text="{l:T 'Badge #'}" Style="{StaticResource FieldLabel}"/>
                                     <TextBox x:Name="Badge"/>
                                 </StackPanel>
-                                <StackPanel x:Name="SlotPanel" Grid.Column="2" Width="110" Margin="10,0,0,0">
+                                <StackPanel x:Name="SlotPanel" Grid.Column="3" Width="110" Margin="10,0,0,0">
                                     <TextBlock Text="{l:T 'Card slot'}" Style="{StaticResource FieldLabel}"/>
                                     <ComboBox x:Name="Slot" FontWeight="SemiBold" MaxDropDownHeight="260"/>
                                 </StackPanel>
@@ -210,7 +215,7 @@
                 <DockPanel>
                     <DockPanel DockPanel.Dock="Top" Margin="0,0,0,14">
                         <TextBox x:Name="Search" DockPanel.Dock="Right" Width="280" Style="{StaticResource SearchBox}"
-                                 Tag="{l:T 'Name, CPR, badge or slot'}" AutomationProperties.Name="{l:T 'Search'}"
+                                 Tag="{l:T 'Name, CPR, badge, slot or vehicle'}" AutomationProperties.Name="{l:T 'Search'}"
                                  TextChanged="Search_TextChanged" KeyDown="Search_KeyDown"/>
                         <TextBlock Text="{l:T 'Inside now'}" Style="{StaticResource CardTitle}" VerticalAlignment="Center"/>
                     </DockPanel>

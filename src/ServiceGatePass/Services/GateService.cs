@@ -4,10 +4,10 @@ using ServiceGatePass.Data;
 namespace ServiceGatePass.Services;
 
 public record CheckInRequest(string Cpr, string NameEn, string? NameAr, string? Employer, int LocationId,
-    string? Company, string? Note, int? BadgeNo, int? SlotNo, int UserId, string? Mobile = null);
+    string? Company, string? Note, int? BadgeNo, int? SlotNo, int UserId, string? Mobile = null, string? VehicleNo = null);
 
 public record InsideRow(int VisitId, string Name, string Cpr, string Location, DateTime CheckInAt, int? BadgeNo, int? SlotNo,
-    string? Company)
+    string? Company, string? VehicleNo = null)
 {
     public string Initials => InitialsOf(Name);
 
@@ -42,6 +42,11 @@ public class GateService(GateDb db, Func<DateTime>? clock = null)
         if (p.Length < 3) return [];
         return db.Visitors.Where(v => v.Cpr.StartsWith(p)).OrderByDescending(v => v.UpdatedAt).Take(max).ToList();
     }
+
+    /// Vehicle number from the visitor's most recent visit that had one, to refill the form.
+    public string? LastVehicle(int visitorId) =>
+        db.Visits.Where(v => v.VisitorId == visitorId && v.VehicleNo != null)
+            .OrderByDescending(v => v.CheckInAt).Select(v => v.VehicleNo).FirstOrDefault();
 
     public Visit CheckIn(CheckInRequest r)
     {
@@ -84,6 +89,7 @@ public class GateService(GateDb db, Func<DateTime>? clock = null)
             Location = location,
             Company = Str.OrNull(r.Company),
             Note = Str.OrNull(r.Note),
+            VehicleNo = Str.OrNull(r.VehicleNo)?.ToUpperInvariant(),
             BadgeNo = r.BadgeNo,
             SlotNo = r.SlotNo,
             CheckInAt = t,
@@ -108,7 +114,7 @@ public class GateService(GateDb db, Func<DateTime>? clock = null)
             .Where(v => v.CheckOutAt == null)
             .OrderBy(v => v.CheckInAt)
             .AsEnumerable()
-            .Select(v => new InsideRow(v.Id, v.Visitor.NameEn, v.Visitor.Cpr, v.Location.Display, v.CheckInAt, v.BadgeNo, v.SlotNo, v.Company))
+            .Select(v => new InsideRow(v.Id, v.Visitor.NameEn, v.Visitor.Cpr, v.Location.Display, v.CheckInAt, v.BadgeNo, v.SlotNo, v.Company, v.VehicleNo))
             .ToList();
 
     public List<int> FreeSlots(int slotCount)

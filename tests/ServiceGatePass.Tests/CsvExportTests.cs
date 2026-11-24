@@ -28,8 +28,8 @@ public class CsvExportTests
     public void Writes_header_and_row()
     {
         var lines = Encoding.UTF8.GetString(Export()).TrimStart('﻿').Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-        Assert.Equal("Name,CPR,Mobile,Location,Company,Note,Badge,Slot,Check-in,Check-out,Checked in by,Checked out by", lines[0]);
-        Assert.Equal("علي حسن,=\"900000001\",,Kitchen,'=SUM(A1),\"a, \"\"b\"\"\",5,3,2026-11-19 09:12,,Guard One,", lines[1]);
+        Assert.Equal("Name,CPR,Mobile,Vehicle,Location,Company,Note,Badge,Slot,Check-in,Check-out,Checked in by,Checked out by", lines[0]);
+        Assert.Equal("علي حسن,=\"900000001\",,,Kitchen,'=SUM(A1),\"a, \"\"b\"\"\",5,3,2026-11-19 09:12,,Guard One,", lines[1]);
     }
 
     [Theory]

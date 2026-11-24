@@ -25,6 +25,7 @@ public class Visit
     public Location Location { get; set; } = null!;
     public string? Company { get; set; }
     public string? Note { get; set; }
+    public string? VehicleNo { get; set; }
     public int? BadgeNo { get; set; }
     public int? SlotNo { get; set; }
     public DateTime CheckInAt { get; set; }

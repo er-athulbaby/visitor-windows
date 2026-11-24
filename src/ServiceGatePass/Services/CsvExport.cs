@@ -12,11 +12,11 @@ public static class CsvExport
         // BOM so Excel shows Arabic names correctly when the file is double-clicked.
         using var w = new StreamWriter(stream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: true), leaveOpen: true);
         w.NewLine = "\r\n";
-        w.WriteLine("Name,CPR,Mobile,Location,Company,Note,Badge,Slot,Check-in,Check-out,Checked in by,Checked out by");
+        w.WriteLine("Name,CPR,Mobile,Vehicle,Location,Company,Note,Badge,Slot,Check-in,Check-out,Checked in by,Checked out by");
         foreach (var r in rows)
             w.WriteLine(string.Join(",", new[]
             {
-                Cell(r.Name), CprCell(r.Cpr), Cell(r.Mobile), Cell(r.Location), Cell(r.Company), Cell(r.Note), Cell(r.BadgeNo?.ToString()), Cell(r.SlotNo?.ToString()),
+                Cell(r.Name), CprCell(r.Cpr), Cell(r.Mobile), Cell(r.VehicleNo), Cell(r.Location), Cell(r.Company), Cell(r.Note), Cell(r.BadgeNo?.ToString()), Cell(r.SlotNo?.ToString()),
                 Cell(r.CheckInAt.ToString(Time)), Cell(r.CheckOutAt?.ToString(Time)), Cell(r.CheckInBy), Cell(r.CheckOutBy),
             }));
     }

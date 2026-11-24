@@ -207,4 +207,25 @@ public class GateServiceTests
         Assert.Equal("960934359", Assert.Single(gate.SuggestVisitors("9609")).Cpr);
         Assert.Empty(gate.SuggestVisitors("123"));
     }
+
+    [Fact]
+    public void Vehicle_is_saved_per_visit_refilled_and_searchable()
+    {
+        using var db = TestDb.Create();
+        var loc = TestDb.AddLocation(db, "Kitchen");
+        var gate = Gate(db);
+
+        var v1 = gate.CheckIn(Req("900000001", loc.Id) with { VehicleNo = " 12345 a " });
+        Assert.Equal("12345 A", v1.VehicleNo);
+        Assert.Equal("12345 A", Assert.Single(gate.Inside()).VehicleNo);
+        gate.CheckOut(v1.Id, 1);
+
+        now = T0.AddHours(2);
+        var v2 = gate.CheckIn(Req("900000001", loc.Id));
+        Assert.Null(v2.VehicleNo);
+        Assert.Equal("12345 A", gate.LastVehicle(v1.VisitorId));
+
+        var found = HistoryQuery.Run(db, new HistoryFilter(T0, T0, "345", null, null));
+        Assert.Equal("12345 A", Assert.Single(found).VehicleNo);
+    }
 }
